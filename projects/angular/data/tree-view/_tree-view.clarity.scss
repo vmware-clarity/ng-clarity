@@ -90,9 +90,7 @@
 
     &:focus > .clr-treenode-content,
     &:focus > .clr-treenode-checkbox {
-      outline-offset: calc(-1 * tokens.$cds-alias-object-border-width-200);
-
-      @include mixins.include-slim-outline-style-form-fields(tokens.$cds-alias-object-border-width-200);
+      @include mixins.focus-outline-inset();
     }
   }
 

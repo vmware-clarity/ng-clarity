@@ -213,10 +213,6 @@ body[cds-text*='body'] {
   }
 }
 
-[cds-text='link']:focus {
-  outline: #{tokens.$cds-alias-object-interaction-outline-webkit};
-}
-
 [cds-text~='code'] {
   color: tokens.$cds-alias-status-danger;
   font-family: monospace;

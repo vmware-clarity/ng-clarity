@@ -66,7 +66,7 @@
         outline: none;
 
         &::before {
-          @include mixins.include-outline-style-form-fields(mixins.baselinePx(3));
+          @include mixins.include-outline-style-form-fields(tokens.$cds-global-space-2);
         }
       }
 

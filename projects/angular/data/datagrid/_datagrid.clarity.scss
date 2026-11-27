@@ -566,9 +566,7 @@
       border: none;
 
       &:focus {
-        outline: tokens.$cds-alias-object-interaction-outline;
-        outline-color: -webkit-focus-ring-color;
-        outline-offset: datagrid-variables.$clr-datagrid-cell-outline-offset;
+        @include mixins.focus-outline-inset(datagrid-variables.$clr-datagrid-cell-outline-offset);
       }
 
       clr-dg-filter,
@@ -839,8 +837,8 @@
       &.datagrid-detail-caret {
         padding: 0;
 
-        button {
-          outline-offset: datagrid-variables.$clr-datagrid-cell-outline-offset;
+        button:focus-visible {
+          @include mixins.focus-outline-inset(datagrid-variables.$clr-datagrid-cell-outline-offset);
         }
       }
 
@@ -853,9 +851,7 @@
       }
 
       &:focus {
-        outline: tokens.$cds-alias-object-interaction-outline;
-        outline-color: -webkit-focus-ring-color;
-        outline-offset: calc(-1 * tokens.$cds-global-space-2);
+        @include mixins.focus-outline-inset(datagrid-variables.$clr-datagrid-cell-outline-offset);
       }
 
       clr-dg-action-overflow {

@@ -204,6 +204,8 @@
     overflow-y: auto;
     min-height: alert-variables.$clr-alert-min-height;
     padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-m;
+    // The alert has its own fill, so focus rings on it follow its text colour.
+    --cds-alias-object-interaction-focus-color: currentColor;
 
     .alert-actions {
       align-self: center;
@@ -402,6 +404,8 @@
 
   .alerts-pager {
     color: var(--clr-app-alert-pager-text-color);
+    // The pager has its own fill, so focus rings on it follow its text colour.
+    --cds-alias-object-interaction-focus-color: currentColor;
 
     @each $alertType in $alertTypes {
       .alert-#{$alertType} & {
@@ -423,6 +427,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    // The button takes the pager's text colour, so its focus ring matches the icon.
+    @each $alertType in $alertTypes {
+      .alert-#{$alertType} & {
+        color: var(--clr-app-alert-#{$alertType}-pager-font-color);
+      }
+    }
 
     @include mixins.equilateral(density.$clr-base-icon-size-l);
 

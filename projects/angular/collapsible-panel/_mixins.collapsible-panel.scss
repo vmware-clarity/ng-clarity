@@ -96,6 +96,11 @@
       flex-flow: row;
     }
 
+    // The header sits inside its panel, so the focus ring stays inside it.
+    &:focus-visible {
+      @include mixins.focus-outline-inset();
+    }
+
     &:disabled {
       cursor: not-allowed;
 

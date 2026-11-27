@@ -43,6 +43,15 @@
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-m;
       display: flex;
 
+      // Tabs sit side by side in the nav, so the focus ring stays inside the focused one, clear of the active underline.
+      &:focus-visible {
+        @include mixins.focus-outline-inset(
+          calc(
+            #{tokens.$cds-alias-object-interaction-outline-offset-inset} - #{tokens.$cds-alias-object-border-width-300}
+          )
+        );
+      }
+
       //Clarity Buttons as .nav-links in .nav
       &.btn {
         text-transform: none;

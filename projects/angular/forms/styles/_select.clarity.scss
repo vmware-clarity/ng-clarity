@@ -29,8 +29,10 @@
         @include forms-mixins.input-border-bottom-animation();
       }
 
+      // Like every text field, the border is the focus indicator.
       &[multiple]:focus {
-        @include mixins.include-slim-outline-style-form-fields();
+        outline: none;
+        border-color: forms-variables.$clr-forms-focused-color;
       }
 
       position: relative;

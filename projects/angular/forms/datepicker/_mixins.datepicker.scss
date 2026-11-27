@@ -40,9 +40,12 @@
 
   &:focus {
     // Only because we have defined a background color for is-selected:focus
-    // using cds-alias-object-interaction-outline token will be better when focus state get implemented
-    outline-offset: #{mixins.baselinePx(-3)};
     background: tokens.$cds-alias-object-interaction-background-hover;
+  }
+
+  // A selected day has a solid fill, so the ring takes the day's text colour.
+  &:focus-visible {
+    @include mixins.focus-outline-inset($color: currentColor);
   }
 
   &:active {

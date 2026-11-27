@@ -276,6 +276,11 @@
       color: tokens.$cds-alias-typography-color-400;
 
       @include mixins.generate-typography-token('BODY-14-RG-STD');
+
+      // The body scrolls inside the wrapper, which would clip an outside ring.
+      &:focus-visible {
+        @include mixins.focus-outline-inset();
+      }
     }
 
     & > :first-child {

@@ -92,6 +92,6 @@ slot {
 :host([_focused]) .input,
 [tabindex='0'][focusable]:focus {
   outline: #{tokens.$cds-alias-object-interaction-outline-static};
-  outline: #{tokens.$cds-alias-object-interaction-outline-webkit-static};
+  outline: #{tokens.$cds-alias-object-interaction-outline};
   outline-offset: #{tokens.$cds-alias-object-interaction-outline-offset};
 }
