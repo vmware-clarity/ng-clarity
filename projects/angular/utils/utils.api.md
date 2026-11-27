@@ -1226,7 +1226,7 @@ export class MockFocusableItem implements FocusableItem {
 export function noopAnimations(): boolean;
 
 // @public
-export function normalizeContextText(text: string, lowercase?: boolean): string;
+export function normalizeContextText(text: string): string;
 
 // @public (undocumented)
 export const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
