@@ -7,7 +7,9 @@
 
 import { Route } from '@angular/router';
 
+import { attempt } from './attempt';
 import { ClrAvailableRoute } from './interfaces/context.interface';
+import { stripQueryAndFragment } from './url';
 
 /**
  * The router configuration flattened to navigable path patterns, without wildcards, redirects or custom matchers.
@@ -54,6 +56,54 @@ export function availableRoutes(config: Route[]): ClrAvailableRoute[] {
   };
   visit(config, '');
   return routes;
+}
+
+/**
+ * The configured pattern a path matches (`clusters/:id` for `/clusters/42`), or `null`.
+ * Unknown segments below a lazy route or custom matcher are `*`.
+ */
+export function routePatternFor(config: Route[], path: string): string | null {
+  const match = (entries: Route[], rest: string[], prefix: string[]): string[] | null => {
+    for (const entry of entries) {
+      if (entry.redirectTo !== undefined) {
+        continue;
+      }
+      if (entry.path === '**') {
+        return [...prefix, '**'];
+      }
+      if (entry.matcher && entry.path === undefined) {
+        if (rest.length) {
+          return [...prefix, ...rest.map(() => '*')];
+        }
+        continue;
+      }
+      const own = (entry.path ?? '').split('/').filter(Boolean);
+      if (own.length > rest.length || !own.every((part, index) => part.startsWith(':') || part === rest[index])) {
+        continue;
+      }
+      const remaining = rest.slice(own.length);
+      const pattern = [...prefix, ...own];
+      const children = entry.children ?? loadedChildren(entry);
+      const inner = children ? match(children, remaining, pattern) : null;
+      if (inner) {
+        return inner;
+      }
+      if (entry.loadChildren && !children && remaining.length) {
+        return [...pattern, ...remaining.map(() => '*')];
+      }
+      if (!remaining.length && (entry.component || entry.loadComponent || entry.loadChildren)) {
+        return pattern;
+      }
+    }
+    return null;
+  };
+  const segments = stripQueryAndFragment(path).split('/').filter(Boolean).map(decodeSegment);
+  const pattern = match(config, segments, []);
+  return pattern ? pattern.join('/') : null;
+}
+
+function decodeSegment(segment: string): string {
+  return attempt(() => decodeURIComponent(segment), segment);
 }
 
 function loadedChildren(entry: Route): Route[] | null {

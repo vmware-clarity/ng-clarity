@@ -6,6 +6,7 @@
  */
 
 import {
+  capSnapshotOptions,
   CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_DEFAULT_OPTIONS,
   CLR_CONTEXT_PRESETS,
@@ -13,6 +14,7 @@ import {
   resolveSnapshotOptions,
   withCallOptions,
 } from './snapshot-options';
+import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } from './untrusted-options';
 
 describe('snapshot options', () => {
   describe('resolveSnapshotOptions', () => {
@@ -164,11 +166,67 @@ describe('snapshot options', () => {
     });
   });
 
+  describe('capSnapshotOptions', () => {
+    it('lets a caller ask for less than the ceiling, never more', () => {
+      expect(capSnapshotOptions({ depth: 1 }, { depth: 3 })).toEqual({ depth: 1 });
+      expect(capSnapshotOptions({ depth: 5 }, { depth: 3 })).toEqual({ depth: 3 });
+    });
+
+    it('applies the ceiling where the caller asked for nothing', () => {
+      expect(capSnapshotOptions({}, { depth: 2 })).toEqual({ depth: 2 });
+    });
+
+    it('leaves the request alone where there is no ceiling', () => {
+      expect(capSnapshotOptions({ depth: 5 }, undefined)).toEqual({ depth: 5 });
+    });
+
+    it('adds exclusions up and keeps the ceiling’s exclusions when the request’s list is not one', () => {
+      expect(capSnapshotOptions({ excludeCategories: ['text'] }, { excludeCategories: ['layout'] })).toEqual({
+        excludeCategories: ['layout', 'text'],
+      });
+      expect(
+        capSnapshotOptions({ excludeSelectors: 'x' as unknown as string[] }, { excludeSelectors: ['nav'] })
+      ).toEqual({ excludeSelectors: ['nav'] });
+    });
+
+    it('keeps a narrowing the ceiling chose', () => {
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'main' }).root).toBe('main');
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'modal' }).root).toBe('modal');
+      expect(capSnapshotOptions({ root: 'modal' }, { root: 'page' }).root).toBe('modal');
+    });
+  });
+
+  describe('sanitizeUntrustedSnapshotOptions', () => {
+    it('takes the depth, categories and the page or modal scope only', () => {
+      expect(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS).toEqual(['depth', 'excludeCategories', 'root']);
+      expect(
+        sanitizeUntrustedSnapshotOptions({
+          depth: 2,
+          excludeCategories: ['layout', 7, 'x'.repeat(40)],
+          excludeSelectors: ['nav'],
+          root: 'modal',
+        })
+      ).toEqual({ depth: 2, excludeCategories: ['layout'], root: 'modal' });
+      expect(sanitizeUntrustedSnapshotOptions({ depth: 0 })).toEqual({});
+    });
+
+    it('refuses a selector as the scope, and a value of the wrong kind', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ root: 'main', depth: '5', excludeCategories: 'text' })).toEqual({});
+      expect(sanitizeUntrustedSnapshotOptions('nonsense')).toBeUndefined();
+    });
+
+    it('bounds the category list an untrusted caller may send', () => {
+      const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+      expect(sanitizeUntrustedSnapshotOptions({ excludeCategories: junk })?.excludeCategories?.length).toBe(50);
+    });
+  });
+
   describe('the exported constants', () => {
-    it('cannot be changed by an application, since they decide what every snapshot gets', () => {
+    it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
       expect(Object.isFrozen(CLR_CONTEXT_DEFAULT_OPTIONS)).toBe(true);
       expect(Object.isFrozen(CLR_CONTEXT_PRESETS.minimal)).toBe(true);
       expect(Object.isFrozen(CLR_CONTEXT_CATEGORIES.layout)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS)).toBe(true);
     });
   });
 });

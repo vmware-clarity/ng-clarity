@@ -89,6 +89,10 @@
       <li>Mark parts the model does not need with <code cds-text="code">clrContextIgnore</code>.</li>
       <li>Treat the snapshot as you treat the page's data: it can hold names, addresses and other personal data.</li>
       <li>
+        An embedded frame gets no form values and no full address unless you share them, see
+        <a routerLink="/documentation/contextual-engine/code" fragment="iframes">Serve context to an embedded frame</a>.
+      </li>
+      <li>
         The engine never builds or parses JSON text, so labels and values in any language cannot inject JSON. Serialize
         the snapshot with <code cds-text="code">JSON.stringify</code> and don't escape the text yourself.
       </li>
@@ -309,6 +313,57 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="extractorExample" language="typescript"></app-code-snippet>
     </div>
+
+    <h2 id="iframes" class="clr-mt-48px" cds-text="title">Serve context to an embedded frame</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      An assistant can run in an iframe, built with any stack. The host page answers its requests over
+      <code cds-text="code">postMessage</code>.
+    </p>
+
+    <h3 data-toc-item id="frame-host" class="clr-mt-32px" cds-text="section">Step 1: Enable the bridge on the host</h3>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">A frame is trusted less than your own code, so it gets less:</p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        No form values. A filled field has <code cds-text="code">withheld: true</code> instead. Set
+        <code cds-text="code">shareFormValues</code> to share them.
+      </li>
+      <li>
+        No address beyond the route pattern, such as <code cds-text="code">clusters/:id</code>, and no title. Set
+        <code cds-text="code">shareFullUrl</code> to share them.
+      </li>
+      <li>
+        From its request, only <code cds-text="code">depth</code>, <code cds-text="code">excludeCategories</code> and a
+        <code cds-text="code">root</code> of <code cds-text="code">'page'</code> or <code cds-text="code">'modal'</code>
+        are used, and never to see more than the host's options allow.
+      </li>
+      <li>
+        Only frames inside the page are answered, from the page's own origin unless
+        <code cds-text="code">allowedOrigins</code> lists others.
+      </li>
+      <li>
+        One snapshot per frame per <code cds-text="code">minRequestIntervalMs</code>, and at most five across all
+        frames.
+      </li>
+    </ul>
+
+    <h3 data-toc-item id="frame-client" class="clr-mt-32px" cds-text="section">Step 2: Ask from inside the frame</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The protocol is two plain objects sent with <code cds-text="code">postMessage</code>, which copies them rather
+      than passing JSON text, so the frame needs neither Angular nor Clarity. An Angular frame can call
+      <code cds-text="code">clrRequestHostContext()</code> instead. It resolves <code cds-text="code">null</code> for an
+      answer that does not match the page schema.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="frameClientExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Keep the three checks the example makes: the answer comes from <code cds-text="code">window.parent</code>, from
+      the host's origin, and carries your unguessable <code cds-text="code">requestId</code>. Without them, another
+      frame or another site can answer with a made-up context.
+    </p>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

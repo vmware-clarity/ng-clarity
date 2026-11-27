@@ -171,6 +171,9 @@ export function withCallOptions(
   return effective;
 }
 
+/** Most entries in an untrusted caller's category list; the application's own lists are never cut. */
+export const MAX_LIST_ENTRIES = 50;
+
 /** The caller's options over the defaults, each held to its type and range or else defaulted. */
 export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
   const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS };
@@ -201,6 +204,32 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Res
   };
 }
 
+/** Options asked by one party capped by another's ceiling: the shallower depth wins and exclusions add up. */
+export function capSnapshotOptions(
+  requested: ClrContextSnapshotOptions | undefined,
+  ceiling: ClrContextSnapshotOptions | undefined
+): ClrContextSnapshotOptions {
+  const capped: ClrContextSnapshotOptions = { ...requested };
+  if (!ceiling) {
+    return capped;
+  }
+  if (typeof ceiling.depth === 'number' && Number.isFinite(ceiling.depth)) {
+    const asked = capped.depth;
+    capped.depth = typeof asked === 'number' && asked >= 1 ? Math.min(asked, ceiling.depth) : ceiling.depth;
+  }
+  for (const key of EXCLUSION_KEYS) {
+    const limit = ceiling[key];
+    if (Array.isArray(limit) && limit.length) {
+      (capped as Record<string, unknown>)[key] = union(stringList(limit), stringList(listOrNothing(capped[key])));
+    }
+  }
+  // The ceiling's scope wins, unless it is the whole page.
+  if (ceiling.root && ceiling.root !== 'page') {
+    capped.root = ceiling.root;
+  }
+  return capped;
+}
+
 function stringList(value: readonly unknown[]): string[] {
   return value
     .filter((entry): entry is string => typeof entry === 'string')
@@ -208,7 +237,7 @@ function stringList(value: readonly unknown[]): string[] {
     .filter(entry => entry.length > 0);
 }
 
-/** The exported option constants are shared, so they must not be mutable. */
+/** The exported option constants feed the untrusted allow-list, so they must not be mutable. */
 function deepFreeze<T>(value: T): T {
   if (value && typeof value === 'object' && !Object.isFrozen(value)) {
     Object.freeze(value);

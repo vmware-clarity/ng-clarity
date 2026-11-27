@@ -5,15 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { APP_BASE_HREF } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
-import { ClrPublishedContext, markContext } from '@clr/angular/utils';
-import { onTestFinished } from 'vitest';
+import { provideRouter, Router, withHashLocation } from '@angular/router';
+import { ClrPublishedContext, markContext, publishElementContext } from '@clr/angular/utils';
+import { type Mock, onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
 import { annotate } from '../dom/annotations';
+import { CLR_CONTEXT_PROTOCOL, ClrContextFrameHostOptions } from '../iframe/context-frame-bridge';
 import {
   ClrComponentContext,
   ClrContextCategory,
@@ -24,6 +26,39 @@ import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from '../snapshot-options
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
+
+/**
+ * Asks `engine` for context the way an embedded frame does, through a frame bridge enabled with `options`.
+ * The frame is left out of the snapshots, and the bridge stops when the spec ends.
+ */
+function frameAccessor(
+  engine: ClrContextService,
+  options: ClrContextFrameHostOptions = {}
+): (request?: unknown) => Promise<ClrPageContext> {
+  const frame = document.createElement('iframe');
+  markContext(frame, 'ignore');
+  document.body.appendChild(frame);
+  const postMessage = vi.spyOn(frame.contentWindow as Window, 'postMessage').mockImplementation(() => undefined);
+  engine.enableFrameBridge({ minRequestIntervalMs: 0, ...options });
+  onTestFinished(() => {
+    engine.disableFrameBridge();
+    frame.remove();
+  });
+  let requests = 0;
+  return async request => {
+    const requestId = `frame-accessor-${++requests}`;
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId, options: request },
+        origin: window.location.origin,
+        source: frame.contentWindow,
+      })
+    );
+    const answer = () => postMessage.mock.calls.find(([message]) => message.requestId === requestId)?.[0];
+    await vi.waitFor(() => expect(answer()).toBeDefined());
+    return answer().context as ClrPageContext;
+  };
+}
 
 describe('ClrContextService', () => {
   describe('without configured routes', () => {
@@ -85,6 +120,110 @@ describe('ClrContextService', () => {
       } finally {
         widget.remove();
       }
+    });
+
+    it('resolves host context with null when the page is not embedded', async () => {
+      expect(await engine.requestHostContext()).toBeNull();
+    });
+
+    describe('frame bridge', () => {
+      let frame: HTMLIFrameElement;
+      let postMessage: Mock;
+
+      /** A request from the frame embedded in this page, dispatched the way a browser would. */
+      function requestFrom(requestId: string): void {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId },
+            origin: window.location.origin,
+            source: frame.contentWindow,
+          })
+        );
+      }
+
+      beforeEach(() => {
+        frame = document.createElement('iframe');
+        document.body.appendChild(frame);
+        postMessage = vi.spyOn(frame.contentWindow as Window, 'postMessage').mockImplementation(() => undefined);
+      });
+
+      afterEach(() => {
+        engine.disableFrameBridge();
+        frame.remove();
+      });
+
+      /** Lets the bridge finish its asynchronous snapshot and answer. */
+      function answered(): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve));
+      }
+
+      it('serves snapshots to embedded frames only while the frame bridge is enabled', async () => {
+        // A title of its own, so the assertion below proves the bridge withholds it rather
+        // than passing because the test page happens to have none.
+        const title = document.title;
+        document.title = 'Invoice 4711 - Acme Corp';
+
+        engine.enableFrameBridge();
+        requestFrom('frame-request-1');
+        document.title = title;
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            kind: 'context-response',
+            requestId: 'frame-request-1',
+            context: expect.objectContaining({ title: '' }),
+          }),
+          expect.anything()
+        );
+
+        engine.disableFrameBridge();
+        requestFrom('frame-request-1');
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledTimes(1);
+      });
+
+      it('keeps the running frame bridge when a new configuration is refused', async () => {
+        engine.enableFrameBridge();
+        expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
+
+        requestFrom('frame-request-3');
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
+          expect.anything()
+        );
+      });
+
+      it('stops the previous frame bridge when a new one replaces it', () => {
+        engine.enableFrameBridge();
+        engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+
+        requestFrom('frame-request-4');
+
+        expect(postMessage).not.toHaveBeenCalled();
+      });
+
+      it('says once when its ceiling has an exclusion list that is not one', () => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+        engine.enableFrameBridge({ snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions });
+
+        expect(warn).toHaveBeenCalledExactlyOnceWith(
+          'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+        );
+      });
+
+      it('stops the frame bridge when destroyed', () => {
+        engine.enableFrameBridge();
+        engine.ngOnDestroy();
+
+        requestFrom('frame-request-2');
+
+        expect(postMessage).not.toHaveBeenCalled();
+      });
     });
   });
 
@@ -225,6 +364,151 @@ describe('ClrContextService, configured once for the application', () => {
       'Clarity context options: "everything" is not a preset; use one of full, interactive, minimal.'
     );
     expect(types(await engine.snapshot())).toContain('main');
+  });
+
+  it('holds a caller the application does not control to the application options', async () => {
+    const engine = engineWith({
+      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', depth: 2 },
+    });
+    const snapshot = await frameAccessor(engine)({ excludeCategories: [], root: 'page', depth: 10 });
+    expect(types(snapshot)).toEqual(['main']);
+    expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
+  });
+
+  it('does not let an untrusted caller set off a warning about the application’s options', async () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    expect(types(await frameAccessor(engine)({ excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
+    expect(warn).not.toHaveBeenCalled();
+  });
+
+  it('keeps the application exclusions when a frame sends as many of its own as a list may hold', async () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
+    const ask = frameAccessor(engine, { snapshot: { excludeCategories: ['dialogs'] } });
+    const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+
+    expect(types(await ask({ excludeCategories: junk }))).toEqual(['main']);
+  });
+
+  it('ignores an exclusion list or a selector a frame sends, rather than failing', async () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
+    const ask = frameAccessor(engine, { snapshot: { excludeCategories: ['dialogs'] } });
+
+    expect(types(await ask({ excludeCategories: 'text', root: 'nav' }))).toEqual(['main']);
+  });
+});
+
+describe('ClrContextService, what a caller the application does not control is told about fields, through a frame', () => {
+  let engine: ClrContextService;
+  let form: HTMLElement;
+
+  function reportedValue(snapshot: ClrPageContext): unknown {
+    return snapshot.components.find(component => component.type === 'textbox')?.state?.['value'];
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextService);
+    form = document.createElement('div');
+    form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
+    document.body.appendChild(form);
+  });
+
+  afterEach(() => form.remove());
+
+  it('withholds what the user typed, even when the caller asks for it', async () => {
+    expect(reportedValue(await frameAccessor(engine)({ shareFormValues: true }))).toBeUndefined();
+  });
+
+  it('still describes the field whose value it withholds', async () => {
+    expect((await frameAccessor(engine)()).components.some(component => component.type === 'textbox')).toBe(true);
+  });
+
+  it('withholds what the user chose or ticked as much as what they typed', async () => {
+    form.innerHTML +=
+      '<select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>' +
+      '<input type="checkbox" aria-label="Remember" checked />';
+
+    const json = JSON.stringify(await frameAccessor(engine)());
+    expect(json).not.toContain('"selected"');
+    expect(json).not.toContain('"checked"');
+    expect(json).toContain('"optionCount":2');
+  });
+
+  it('withholds which toggle buttons the user pressed, a choice like a ticked box', async () => {
+    form.innerHTML +=
+      '<button type="button" aria-pressed="true">Pay anonymously</button>' +
+      '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
+      '<button type="button" aria-pressed="true">Annual</button></div>';
+
+    const json = JSON.stringify(await frameAccessor(engine)());
+    expect(json).toContain('Pay anonymously');
+    expect(json).not.toContain('"pressed"');
+    expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
+  });
+
+  it('still honours a smaller depth the caller asks for', async () => {
+    expect((await frameAccessor(engine)({ depth: 1 })).components.every(node => !node.children)).toBe(true);
+  });
+});
+
+describe('ClrContextService, what a caller the application does not control is told about published state, through a frame', () => {
+  let engine: ClrContextService;
+  let page: HTMLElement;
+
+  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
+    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextService);
+    // The snapshot describes the whole page, and fixtures are not torn down after each
+    // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    page.innerHTML = '<a href="/clusters/7">Cluster seven</a>';
+    document.body.appendChild(page);
+  });
+
+  afterEach(() => page.remove());
+
+  it('withholds a selection as much as a typed value', async () => {
+    engine.configure({
+      extractors: [
+        {
+          selector: 'a',
+          extract: () => ({
+            type: 'grid',
+            label: 'Users',
+            state: { selection: ['Ada'], rowCount: 3 },
+          }),
+        },
+      ],
+    });
+
+    const grid = find((await frameAccessor(engine)()).components, node => node.type === 'grid')[0];
+    expect(grid.state).toEqual({ rowCount: 3, withheld: true });
+  });
+
+  it('redacts a node its publisher marks redacted, without listing the key', async () => {
+    page.innerHTML = '<div class="card"><label>Card <input value="4111" /></label></div>';
+    const unpublish = publishElementContext(page.querySelector('.card') as HTMLElement, () => ({
+      type: 'group',
+      label: 'Card 4111',
+      state: { redacted: true },
+    }));
+
+    try {
+      expect(JSON.stringify((await frameAccessor(engine)()).components)).not.toContain('4111');
+    } finally {
+      unpublish();
+    }
+  });
+
+  it('reads the scope only as the page or the modal, never as a selector', async () => {
+    expect((await frameAccessor(engine)({ root: 'main' })).components.length).toBeGreaterThan(0);
+    expect((await frameAccessor(engine)({ root: 7 })).components.length).toBeGreaterThan(0);
   });
 });
 
@@ -790,5 +1074,154 @@ describe('ClrContextService, slotted content', () => {
 
     expect(text).toContain('Pay');
     expect(text).not.toContain('4111111111111111');
+  });
+});
+
+describe('ClrContextService, the frame bridge as a boundary', () => {
+  let engine: ClrContextService;
+  let form: HTMLElement;
+
+  function nodeCount(snapshot: ClrPageContext): number {
+    const count = (nodes: ClrComponentContext[]): number =>
+      nodes.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
+    return count(snapshot.components);
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextService);
+    // Fixtures are not torn down after each spec here (`destroyAfterEach: false`).
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    form = document.createElement('div');
+    form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
+    document.body.appendChild(form);
+  });
+
+  afterEach(() => form.remove());
+
+  it('lets a frame ask for less depth than the host allows, never for more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
+
+    expect(nodeCount(await ask({ depth: 1 }))).toBe(1);
+    expect(nodeCount(await ask({ depth: 5 }))).toBe(2);
+  });
+
+  it('drops a depth that is not a number of one or more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
+
+    expect(nodeCount(await ask({ depth: Number.NaN }))).toBe(2);
+  });
+
+  it('shares what the user typed only when the host says so', async () => {
+    form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
+    const ask = frameAccessor(engine, { shareFormValues: true });
+
+    expect(JSON.stringify(await ask())).toContain('user-typed-secret');
+  });
+});
+
+describe('ClrContextService, the addresses an embedded frame is told', () => {
+  let engine: ClrContextService;
+  let page: HTMLElement;
+
+  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
+    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'clusters/:id', component: RoutedComponent },
+          {
+            path: 'billing',
+            loadChildren: () => Promise.resolve([{ path: 'invoices', component: RoutedComponent, title: 'Invoices' }]),
+          },
+        ]),
+      ],
+    });
+    engine = TestBed.inject(ClrContextService);
+    // The frame is told about the whole page, and fixtures are not torn down after each
+    // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    page.innerHTML =
+      '<a href="/download?signature=s3cr3t#part">Download</a><a href="/clusters/7?token=s3cr3t">Cluster seven</a>' +
+      '<a href="/billing/invoices/2026-s3cr3t">Invoice</a>';
+    document.body.appendChild(page);
+    await TestBed.inject(Router).navigateByUrl('/clusters/42?token=s3cr3t');
+  });
+
+  afterEach(() => page.remove());
+
+  it('reports the route pattern instead of the address, and links as the route they lead to', async () => {
+    const snapshot = await frameAccessor(engine)();
+
+    expect(snapshot.route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
+    expect(snapshot.url).toBe(`${location.origin}/clusters/:id`);
+    expect(find(snapshot.components, node => node.type === 'link').map(link => link.state?.['href'])).toEqual([
+      undefined,
+      '/clusters/:id',
+      '/billing/*/*',
+    ]);
+    expect(JSON.stringify(snapshot)).not.toContain('s3cr3t');
+    expect(JSON.stringify({ url: snapshot.url, route: snapshot.route })).not.toContain('42');
+  });
+
+  it('shares the full address only when the host says so', async () => {
+    const snapshot = await frameAccessor(engine, { shareFullUrl: true })();
+
+    expect(snapshot.route?.url).toBe('/clusters/42?token=s3cr3t');
+    expect(JSON.stringify(snapshot.components)).toContain('signature=s3cr3t');
+    expect(snapshot.title).toBe(document.title);
+  });
+
+  it('lists the routes when the application turned them on, and never when a frame asks for them', async () => {
+    expect((await frameAccessor(engine)({ routes: true })).availableRoutes).toBeUndefined();
+
+    engine.configure({ routes: true });
+    expect((await frameAccessor(engine)()).availableRoutes).toContainEqual({ path: 'clusters/:id' });
+  });
+});
+
+describe('ClrContextService, links an embedded frame is told about under other routing setups', () => {
+  let page: HTMLElement;
+
+  async function hrefs(engine: ClrContextService): Promise<unknown[]> {
+    const snapshot = await frameAccessor(engine)();
+    return snapshot.components.filter(node => node.type === 'link').map(node => node.state?.['href']);
+  }
+
+  beforeEach(() => {
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    document.body.appendChild(page);
+  });
+
+  afterEach(() => page.remove());
+
+  it('reads routes below the base href the router uses, without a <base> element', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([{ path: 'clusters/:id', component: RoutedComponent }]),
+        { provide: APP_BASE_HREF, useValue: '/app/' },
+      ],
+    });
+    page.innerHTML = '<a href="/app/clusters/7?token=x">In the app</a><a href="/clusters/7">Outside it</a>';
+
+    expect(await hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
+  });
+
+  it('reads routes from the fragment with hash routing', async () => {
+    TestBed.configureTestingModule({
+      providers: [provideRouter([{ path: 'clusters/:id', component: RoutedComponent }], withHashLocation())],
+    });
+    page.innerHTML = '<a href="#/clusters/7?token=x">Cluster</a><a href="#/nowhere/at/all">Nowhere</a>';
+
+    expect(await hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
   });
 });

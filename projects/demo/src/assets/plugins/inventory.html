@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Inventory plugin</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 12px;
+        font-size: 13px;
+      }
+      h1 {
+        font-size: 16px;
+        margin-top: 0;
+      }
+      table {
+        margin-top: 12px;
+        border-collapse: collapse;
+      }
+      td,
+      th {
+        border: 1px solid #999;
+        padding: 4px 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Inventory</h1>
+    <p>
+      Rendered by a plugin in its own frame, served as a plain static page. The host application has no knowledge of
+      this markup.
+    </p>
+    <form>
+      <p>
+        <label for="vm-name">VM name</label>
+        <input id="vm-name" name="vmName" placeholder="web-01" required />
+      </p>
+      <p>
+        <label for="vm-size">Size</label>
+        <select id="vm-size" name="size">
+          <option value="s">Small (2 vCPU)</option>
+          <option value="m" selected>Medium (4 vCPU)</option>
+          <option value="l">Large (8 vCPU)</option>
+        </select>
+      </p>
+      <p>
+        <input id="vm-backup" name="backup" type="checkbox" checked />
+        <label for="vm-backup">Nightly backup</label>
+      </p>
+      <button type="button">Create VM</button>
+    </form>
+    <table>
+      <caption>
+        Virtual machines
+      </caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>State</th>
+          <th>CPU</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>web-01</td>
+          <td>Running</td>
+          <td>34%</td>
+        </tr>
+        <tr>
+          <td>db-01</td>
+          <td>Running</td>
+          <td>71%</td>
+        </tr>
+        <tr>
+          <td>batch-02</td>
+          <td>Stopped</td>
+          <td>0%</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

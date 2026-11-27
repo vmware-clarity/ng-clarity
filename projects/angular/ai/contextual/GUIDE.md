@@ -30,6 +30,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - A backend validates snapshots with `@clr/angular/ai/schemas/page-context-<schemaVersion>.schema.json`, also served at `https://clarity.design/schemas/page-context-<schemaVersion>.schema.json`; `snapshot()` already leaves out what does not match it.
 - Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Bind `false` to lift either one, such as `[clrContextRedact]="row.private"`. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); they set `data-clr-context-redact` and `data-clr-context-ignore`, which is what the engine reads. Markup outside Angular templates can carry those attributes itself.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
+- Callers the application does not control, such as embedded frames, get no form values and only the route pattern.
 - The engine never builds or parses JSON text, so labels and values in any language cannot inject JSON. `snapshot()` returns an object; serialize it with `JSON.stringify` and don't escape the text yourself.
 
 ## Adding context
@@ -69,3 +70,4 @@ export class Firewall {
 - Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
 - A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
+- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not. Requests and answers are objects sent with `postMessage`, which copies them rather than passing JSON text, and `clrRequestHostContext()` resolves `null` for an answer that does not match the page schema.
