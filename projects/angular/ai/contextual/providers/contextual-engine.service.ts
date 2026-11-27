@@ -11,6 +11,7 @@ import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
+import { usableTimeout } from '../attempt';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin } from '../dom/walk';
 import {
@@ -30,6 +31,9 @@ import {
   withCallOptions,
 } from '../snapshot-options';
 
+/** How long a snapshot waits for each asynchronous provider by default. */
+const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
+
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
   /** What every snapshot reads: a preset name, or snapshot options. Default: the whole page. */
@@ -38,6 +42,8 @@ export interface ClrContextConfig {
   routes?: boolean;
   /** Describe markup with neither a role nor an accessible name, such as other libraries' components. */
   extractors?: ClrContextDomExtractor[];
+  /** How long `snapshot()` waits for each provider that answers with a promise. Default `2000`. */
+  timeoutMs?: number;
 }
 
 /** Reads the current page for an AI agent: route, rendered components and registered context. */
@@ -79,7 +85,7 @@ export class ClrContextService {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return Promise.resolve(this.read(options));
+    return this.readAsync(options);
   }
 
   /** The route, with nothing about the page yet. */
@@ -103,6 +109,18 @@ export class ClrContextService {
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = this.contextRegistry.collect({ limits: resolved });
     return this.describePage(snapshot, resolved, regions);
+  }
+
+  /** Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. */
+  private async readAsync(options: ClrContextSnapshotOptions | undefined): Promise<ClrPageContext> {
+    this.snapshotTaken = true;
+    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
+    const regions = await this.contextRegistry.collectAsync({
+      timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
+      limits: resolved,
+    });
+    // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
+    return this.describePage(this.emptySnapshot(), resolved, regions);
   }
 
   private describePage(
