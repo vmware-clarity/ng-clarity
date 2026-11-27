@@ -45,7 +45,7 @@ const densityLocalStorageKey = 'density';
         box-sizing: border-box;
         width: var(--clr-base-icon-size-m);
         height: var(--clr-base-icon-size-m);
-        border: var(--clr-base-border-stroke) solid var(--clr-header-font-color);
+        border: var(--cds-alias-object-border-width-100) solid var(--clr-header-font-color);
         border-radius: var(--clr-base-border-radius-xs);
       }
       clr-icon.density-toggle-icon {
