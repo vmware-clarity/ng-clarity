@@ -88,28 +88,9 @@
       </li>
       <li>Mark parts the model does not need with <code cds-text="code">clrContextIgnore</code>.</li>
       <li>Treat the snapshot as you treat the page's data: it can hold names, addresses and other personal data.</li>
-    </ul>
-
-    <h2 id="json-safety" class="clr-mt-48px" cds-text="title">JSON safety</h2>
-    <p class="clr-mt-16px" cds-text="body">
-      Labels and values can hold any text, in any language. The engine never builds or parses JSON text, so none of it
-      can change the structure of a snapshot:
-    </p>
-    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
       <li>
-        Annotations, providers and published state are JavaScript values. The engine keeps only strings, numbers,
-        booleans, <code cds-text="code">null</code>, arrays and plain objects. Functions, class instances and cyclic
-        references are dropped, and a <code cds-text="code">__proto__</code> key stays an ordinary key.
-      </li>
-      <li>
-        <code cds-text="code">snapshot()</code> returns an object, not a string. Serialize it with
-        <code cds-text="code">JSON.stringify</code>, which escapes quotes, backslashes and control characters. A label
-        holding <code cds-text="code">"</code>, <code cds-text="code">&#125;</code> or
-        <code cds-text="code">&lt;/script&gt;</code> stays one string value.
-      </li>
-      <li>
-        Don't escape or strip characters yourself: that corrupts localized labels and protects nothing. To show the JSON
-        in a page, set it as text, never as HTML.
+        The engine never builds or parses JSON text, so labels and values in any language cannot inject JSON. Serialize
+        the snapshot with <code cds-text="code">JSON.stringify</code> and don't escape the text yourself.
       </li>
     </ul>
   </app-doc-tab>
