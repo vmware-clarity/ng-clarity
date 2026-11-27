@@ -226,6 +226,131 @@ inject(ClrContextService).configure({
 });
 `;
 
+const MUTATION_POLICY_EXAMPLE = `
+import { ClrMutationConsequence, ClrMutationTarget, provideClrMutationPolicy } from '@clr/angular/ai';
+
+// The routes an agent may go to, and what going there means. Every other route is forbidden.
+const AGENT_ROUTES = new Map<string, ClrMutationConsequence>([
+  ['vms', 'reversible'],
+  ['vms/:id', 'reversible'],
+  ['billing', 'consequential'],
+]);
+// The query parameters an agent may add. The agent chooses them; the route does not constrain them.
+const AGENT_QUERY_PARAMS = new Set(['tab', 'filter']);
+
+function classify(target: ClrMutationTarget): ClrMutationConsequence {
+  if (target.operation === 'navigate') {
+    const query = Object.keys(target.queryParams ?? {});
+    if (query.some(key => !AGENT_QUERY_PARAMS.has(key))) {
+      return 'forbidden';
+    }
+    return AGENT_ROUTES.get(target.path ?? '') ?? 'forbidden';
+  }
+  // Fields are opted in, in the template, with data-agent-fill or data-agent-confirm.
+  // Judge the element rather than its label: a label is translated, and can repeat.
+  if (target.element?.closest('[data-agent-confirm]')) {
+    return 'consequential';
+  }
+  return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+}
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideClrMutationPolicy({
+      classify,
+      // Asked before anything consequential is applied; resolving false refuses it.
+      confirm: target =>
+        window.confirm(target.url ? \`Go to \${target.url}?\` : \`Set \${target.label} to \${JSON.stringify(target.value)}?\`),
+      // Told what an apply() did, so the person learns it too — in the application's words.
+      announce: report => console.info(\`\${report.results.filter(result => result.applied).length} fields filled\`),
+    }),
+  ],
+});
+`;
+
+const REFS_EXAMPLE = `
+{
+  "type": "combobox",
+  "element": "clr-combobox",
+  "ref": "e0c9h3tzp",
+  "label": "Cluster",
+  "state": { "options": ["Alpha cluster", "Beta cluster"], "value": null }
+}
+`;
+
+const APPLY_EXAMPLE = `
+const report = await this.mutationEngine.apply([
+  { operation: 'setValue', ref: 'e7mq2k4xa', value: 'Ada' },
+  { operation: 'setValue', ref: 'e0c9h3tzp', value: 'Beta cluster' },
+  { operation: 'setValue', ref: 'e5bw81nre', value: '2026-03-06' },
+  { operation: 'setValue', ref: 'e2kd6v0sm', value: ['esx-01', 'esx-02'] },
+  { operation: 'clear', ref: 'e9yx4q7lf' },
+]);
+
+// What each operation did, then the page as it is now and what changed.
+report.results; // ClrMutationResult[]
+report.snapshot; // a fresh ClrPageContext, with refs to continue from
+report.changes; // clrDiffContext(before, after)
+
+// plan() resolves, classifies and coerces without writing anything.
+const plan = this.mutationEngine.plan(operations);
+`;
+
+const RESULT_EXAMPLE = `
+[
+  {
+    "operation": "setValue",
+    "ref": "e7mq2k4xa",
+    "applied": true,
+    "value": "Ada",
+    "previous": "",
+    "status": "VALID"
+  },
+  {
+    "operation": "setValue",
+    "ref": "e0c9h3tzp",
+    "applied": true,
+    "value": "Beta cluster",
+    "previous": null,
+    "status": "VALID"
+  },
+  {
+    "operation": "setValue",
+    "ref": "e3pn5j2wd",
+    "applied": true,
+    "value": "",
+    "previous": "seed",
+    "status": "INVALID",
+    "errors": { "required": true }
+  },
+  {
+    "operation": "setValue",
+    "ref": "e0c9h3tzp",
+    "applied": false,
+    "refused": "invalid",
+    "detail": "No such option. The options are: \\"Alpha cluster\\", \\"Beta cluster\\"."
+  },
+  {
+    "operation": "setValue",
+    "ref": "e8ht0r6gu",
+    "applied": false,
+    "refused": "stale",
+    "detail": "The ref names nothing on the page now: the node is gone or changed since the snapshot. Take a new snapshot and use its refs."
+  }
+]
+`;
+
+const NAVIGATE_EXAMPLE = `
+const report = await this.mutationEngine.apply([
+  { operation: 'navigate', path: 'clusters/:id', params: { id: '42' }, queryParams: { tab: 'hosts' } },
+]);
+
+report.results[0];
+// { operation: 'navigate', path: 'clusters/:id', applied: true, outcome: 'navigated', url: '/clusters/42?tab=hosts' }
+// or: { applied: true, outcome: 'redirected', url: '/login' }
+// or: { applied: false, outcome: 'rejected', url: '/', detail: 'A route guard refused the navigation.' }
+`;
+
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './contextual-engine.demo.html',
@@ -256,6 +381,11 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   changesExample = CHANGES_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
   extractorExample = EXTRACTOR_EXAMPLE;
+  mutationPolicyExample = MUTATION_POLICY_EXAMPLE;
+  refsExample = REFS_EXAMPLE;
+  applyExample = APPLY_EXAMPLE;
+  resultExample = RESULT_EXAMPLE;
+  navigateExample = NAVIGATE_EXAMPLE;
 
   constructor() {
     super('contextual-engine');

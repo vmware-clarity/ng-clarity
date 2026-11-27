@@ -143,6 +143,9 @@
         "type": {
           "type": "string"
         },
+        "ref": {
+          "type": "string"
+        },
         "element": {
           "type": "string"
         },

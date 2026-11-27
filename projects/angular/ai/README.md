@@ -37,6 +37,57 @@ export class FirewallComponent {
 }
 ```
 
+### Writing back
+
+Nothing is written until the application provides a policy. Provide one that allows what you name
+and forbids the rest:
+
+```ts
+import { ApplicationConfig } from '@angular/core';
+import { provideClrMutationPolicy } from '@clr/angular/ai';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideClrMutationPolicy({
+      classify: target => {
+        if (target.operation === 'navigate') {
+          // The agent chooses the query parameters; the route does not constrain them.
+          return target.path === 'vms' && !Object.keys(target.queryParams ?? {}).length ? 'reversible' : 'forbidden';
+        }
+        // Fields are opted in, in the template, with data-agent-fill.
+        return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+      },
+    }),
+  ],
+};
+```
+
+Then, in the same component that reads the page, plan and apply the operations the agent proposes:
+
+```ts
+import { ClrMutationService, ClrMutationOperation } from '@clr/angular/ai';
+
+export class AssistantComponent {
+  // ...the engine above.
+  private readonly mutationEngine = inject(ClrMutationService);
+
+  async act(operations: ClrMutationOperation[]) {
+    // Refs from the latest snapshot, such as { operation: 'setValue', ref: 'e7mq2k4xa', value: 'web-01' }.
+    const plan = this.mutationEngine.plan(operations); // what each would do, nothing written
+    const report = await this.mutationEngine.apply(operations); // results, a fresh snapshot, what changed
+    return { plan, report };
+  }
+}
+```
+
+`apply()` resolves with each operation's result. A refused one carries `refused` (such as `redacted`,
+`unbound` or `unsupported`) and a `detail` saying why, so show those to the user rather than
+treating the call as done. The policy's optional `announce` receives the same report, for a log or a
+notification that does not depend on the caller.
+
+Never classify everything as reversible (`classify: () => 'reversible'`): anyone who can put words
+in front of the model could then fill any bound field on the page, including one moved off-screen.
+
 ## How it works
 
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
@@ -47,8 +98,21 @@ equivalent in `@clr/angular/utils`, so they do not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries.
 
+The engine's write half, the **mutation engine** (`ClrMutationService`), lets an agent act on
+what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to any
+route of the application's router configuration (as `availableRoutes` lists them), addressing
+controls by the `ref` each snapshot node carries — random, and stable for an element while it is on
+the page. It never submits, clicks or invokes; never writes what a snapshot would not show (an
+excluded or redacted control, option, radio or row; size budgets and summary mode shorten what a
+snapshot lists, not what can be written); and does nothing at all until the application provides a
+`ClrMutationPolicy` classifying what each operation would do. Clarity components whose value is not what
+an agent sees — the combobox, the date input, the datagrid's row selection — say how they are
+written to internally. An application's own control is written through its form binding when it
+renders a role the engine knows and its model holds what it shows.
+
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
-model, never instructions: delimit it in prompts.
+model, never instructions: delimit it in prompts, and let the policy judge each operation's target
+rather than the agent's stated reason. The website guide has a section on this.
 
 The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
 (`/documentation/contextual-engine`).

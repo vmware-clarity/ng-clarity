@@ -20,7 +20,7 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOp
 });
 
 /** Longest text value in a snapshot; longer text is truncated. */
-const MAX_TEXT_LENGTH = 100;
+export const MAX_TEXT_LENGTH = 100;
 
 /** The options as the walk reads them: the public ones resolved, and what they imply. */
 export interface ResolvedSnapshotOptions extends Required<ClrContextSnapshotOptions> {

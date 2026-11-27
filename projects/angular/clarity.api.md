@@ -2408,6 +2408,7 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
+    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -4287,6 +4288,8 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;
@@ -4595,6 +4598,24 @@ export class ClrDropdownTrigger {
 
 // @public
 export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    display?: unknown;
+    refused?: undefined;
+} | {
+    refused: string;
+    value?: undefined;
+    display?: undefined;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+}
 
 // @public (undocumented)
 export class ClrEmphasisModule {
@@ -9782,6 +9803,9 @@ export const eCheckIconName = "e-check";
 // @public
 export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
 
+// @public
+export function elementMutatorOf(host: Element): ClrElementMutator | undefined;
+
 // @public (undocumented)
 export const ellipsisGridCircleIcon: IconShapeTuple;
 
@@ -11244,6 +11268,9 @@ export const processOnVmIconName = "process-on-vm";
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;

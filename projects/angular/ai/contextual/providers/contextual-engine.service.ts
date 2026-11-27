@@ -26,6 +26,8 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
+import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
+import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
@@ -65,6 +67,9 @@ export class ClrContextService {
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
   private snapshotTaken = false;
+  // Refs are handed out only under a policy, so readers who never write pay nothing.
+  private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
+  private readonly refs = inject(ContextRefRegistryService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
@@ -104,6 +109,11 @@ export class ClrContextService {
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
     // What leaves the page always matches the schema a backend validates with.
     return this.readAsync(options).then(conformingSnapshot);
+  }
+
+  /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */
+  resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
+    return resolveSnapshotOptions(withCallOptions(this.scope, options));
   }
 
   /**
@@ -171,7 +181,7 @@ export class ClrContextService {
 
   private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
-    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
+    const resolved = this.resolveScope(options);
     const snapshot = this.viewSnapshot(resolved);
     if (!snapshot.enabled) {
       return snapshot;
@@ -186,7 +196,7 @@ export class ClrContextService {
    */
   private async readAsync(options: ClrContextSnapshotOptions | undefined, retries = 1): Promise<ClrPageContext> {
     this.snapshotTaken = true;
-    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
+    const resolved = this.resolveScope(options);
     const view = this.viewSnapshot(resolved);
     if (!view.enabled) {
       return view;
@@ -221,7 +231,9 @@ export class ClrContextService {
       snapshot.availableRoutes = availableRoutes(this.router.config);
     }
     if (isPlatformBrowser(this.platformId)) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? []);
+      const refs = this.mutationPolicy ? this.refs.begin() : null;
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs);
+      refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;

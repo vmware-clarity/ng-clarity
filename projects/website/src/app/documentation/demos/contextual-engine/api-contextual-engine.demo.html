@@ -156,6 +156,201 @@
   </tbody>
 </table>
 
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrMutationService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Lets an agent fill in form fields and navigate. It never submits or clicks. It does nothing until the application
+  provides a <code cds-text="code">ClrMutationPolicy</code>. Its results include the values on the page, so keep them
+  inside the application.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">apply(operations, snapshotOptions?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrMutationReport&gt;</code></td>
+      <td class="left">
+        Runs the operations in order and returns a report: what each one did or why it was refused, a new snapshot, and
+        what changed. Show the refusals in the chat panel from this report. A refused operation does not stop the rest.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">plan(operations, snapshotOptions?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrMutationPlanEntry[]</code></td>
+      <td class="left">
+        Says what <code cds-text="code">apply()</code> would do, without doing it. Pass the same
+        <code cds-text="code">snapshotOptions</code> as to <code cds-text="code">apply()</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px">Operations</h4>
+<p class="clr-mt-16px" cds-text="body">
+  Each is a <code cds-text="code">ClrMutationOperation</code>, with <code cds-text="code">operation</code> set to its
+  name.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  Their JSON Schema ships as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/mutation-operations-1.schema.json</code> and as
+  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/mutation-operations-1.schema.json"
+    >clarity.design/schemas/mutation-operations-1.schema.json</a
+  >. It holds no references, so it fits a tool definition as
+  <code cds-text="code"
+    >&#123; type: 'object', properties: &#123; operations: CLR_MUTATION_OPERATIONS_SCHEMA &#125; &#125;</code
+  >, and a backend validates what a model proposes with it. <code cds-text="code">apply()</code> and
+  <code cds-text="code">plan()</code> refuse an operation that does not match it as
+  <code cds-text="code">unsupported</code>, naming the field, and every operation past the first
+  <code cds-text="code">CLR_MUTATION_MAX_OPERATIONS</code> (50).
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Operation</th>
+      <th class="left clr-hidden-xs-down">Fields</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">setValue</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ref</code>, <code cds-text="code">value</code></td>
+      <td class="left">
+        Gives a field a value: text, a number, <code cds-text="code">true</code> or <code cds-text="code">false</code>,
+        an option's label, a date, or the rows to select. <code cds-text="code">ref</code> comes from the snapshot.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clear</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">ref</code>
+      </td>
+      <td class="left">Empties a field.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">navigate</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">path</code>, <code cds-text="code">params?</code>,
+        <code cds-text="code">queryParams?</code>
+      </td>
+      <td class="left">
+        Goes to a route of the application through the router, with route guards applied.
+        <code cds-text="code">path</code> is the pattern as <code cds-text="code">availableRoutes</code> lists it, such
+        as <code cds-text="code">clusters/:id</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px">Results</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">applied</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">Whether the operation took effect.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">value, previous</b></td>
+      <td class="left clr-hidden-xs-down">unknown</td>
+      <td class="left">The field's value now and before, so the application can undo it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">status, errors</b></td>
+      <td class="left clr-hidden-xs-down">String, Object</td>
+      <td class="left">The form control's validity and validation errors after the write.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">outcome, url</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        For a navigation: <code cds-text="code">navigated</code>, <code cds-text="code">redirected</code>,
+        <code cds-text="code">unchanged</code>, <code cds-text="code">rejected</code>,
+        <code cds-text="code">superseded</code> or <code cds-text="code">failed</code>, and the URL the page is now at.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">refused, detail</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        Why the operation was refused (a <code cds-text="code">ClrMutationRefusal</code>), and a sentence saying what to
+        do about it. The most common are <code cds-text="code">unclassified</code> (no policy),
+        <code cds-text="code">forbidden</code> (the policy said no), <code cds-text="code">declined</code> (the user
+        said no), <code cds-text="code">redacted</code> (a password or secret field),
+        <code cds-text="code">unbound</code> (the field has no Angular form binding) and
+        <code cds-text="code">stale</code> (the node is gone or changed since the snapshot).
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px"><code cds-text="code">ClrMutationPolicy</code></h4>
+<p class="clr-mt-16px" cds-text="body">
+  Provided with <code cds-text="code">provideClrMutationPolicy(policy)</code> in the application's providers, not in a
+  lazy route. It decides which writes are allowed and which need the user to confirm. Each method gets a
+  <code cds-text="code">ClrMutationTarget</code>: the operation, the field's label, type and element, or the route, and
+  the value about to be written.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">classify(target)</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">'reversible' | 'consequential' | 'forbidden'</code>
+      </td>
+      <td class="left">
+        Required. Says what a write would do: <code cds-text="code">reversible</code> runs at once,
+        <code cds-text="code">consequential</code> asks <code cds-text="code">confirm</code> first, and
+        <code cds-text="code">forbidden</code> is refused. Decide by the element or the form control, not the label,
+        which is translated and can repeat.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">confirm(target)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">boolean | Promise&lt;boolean&gt;</code></td>
+      <td class="left">
+        Optional. Asks the user before a consequential write. Without it, consequential writes are refused.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">confirmTimeoutMs</b></td>
+      <td class="left clr-hidden-xs-down">Number</td>
+      <td class="left">
+        Optional. How long <code cds-text="code">confirm</code> may wait before the write is refused. Two minutes by
+        default; <code cds-text="code">0</code> waits forever.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">announce(report)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Optional. Called after every <code cds-text="code">apply()</code>, for an app-wide toast or log. A chat panel
+        can read the report that <code cds-text="code">apply()</code> returns instead.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="directives" cds-text="title" class="clr-mt-48px">Directives</h2>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
@@ -217,7 +412,7 @@
       <td class="left"><b cds-text="medium">clrContextRedact</b></td>
       <td class="left">
         The field, or every field inside the element, is still described (its label and type), but its value and the
-        text it shows are never read. Bind <code cds-text="code">false</code> to lift it, such as
+        text it shows are never read or written. Bind <code cds-text="code">false</code> to lift it, such as
         <code cds-text="code">[clrContextRedact]="row.private"</code>. Exported as
         <code cds-text="code">ClrContextRedact</code>; it sets <code cds-text="code">data-clr-context-redact</code>.
       </td>
@@ -455,6 +650,14 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
       <td class="left">What it contains. A dialog's buttons are among its children.</td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ref</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The id to pass to <code cds-text="code">setValue</code> and <code cds-text="code">clear</code>. Present only
+        with a mutation policy, and only on fields that can be written.
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -626,6 +829,10 @@
         <code cds-text="code">clrContextIgnore</code> region), and whether it reads no text from it (hidden, redacted or
         an editing host). For publishers that label things from their content.
       </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_MUTATION_POLICY</b></td>
+      <td class="left">The injection token behind <code cds-text="code">provideClrMutationPolicy</code>.</td>
     </tr>
   </tbody>
 </table>

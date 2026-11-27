@@ -24,6 +24,12 @@ const SCHEMAS = [
     schema: 'CLR_PAGE_CONTEXT_SCHEMA',
     version: 'CLR_PAGE_CONTEXT_SCHEMA_VERSION',
   },
+  {
+    name: 'mutation-operations',
+    source: 'projects/angular/ai/contextual/mutation/schema.ts',
+    schema: 'CLR_MUTATION_OPERATIONS_SCHEMA',
+    version: 'CLR_MUTATION_OPERATIONS_SCHEMA_VERSION',
+  },
 ];
 const LOCK = path.join(DIR, 'versions.json');
 const HEADER = `/*

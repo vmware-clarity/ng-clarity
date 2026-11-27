@@ -10,7 +10,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
-import { ClrContextIgnore } from '@clr/angular/ai';
+import { ClrContextIgnore, provideClrMutationPolicy } from '@clr/angular/ai';
 
 import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
@@ -29,7 +29,20 @@ import { LandingComponent } from './landing.component';
     ContextInspectorComponent,
   ],
   imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ClrContextIgnore, ROUTING],
-  providers: [cdsThemePathLocationStrategyProvider],
+  providers: [
+    cdsThemePathLocationStrategyProvider,
+    // Demo mutation policy: fields inside `data-agent-fill` are reversible, leaving the page without
+    // query parameters needs confirmation, and everything else is forbidden.
+    provideClrMutationPolicy({
+      classify: target => {
+        if (target.operation === 'navigate') {
+          return Object.keys(target.queryParams ?? {}).length ? 'forbidden' : 'consequential';
+        }
+        return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+      },
+      confirm: target => window.confirm(`Let the agent go to ${target.url}?`),
+    }),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

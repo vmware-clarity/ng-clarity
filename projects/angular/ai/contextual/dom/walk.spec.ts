@@ -9,7 +9,7 @@ import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext }
 
 import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
-import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
+import { ClrContextTreeResult, collectContextTreeWithin, isOutsideSnapshot } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 /** The element each spec renders into, attached to the page for the spec's duration. */
@@ -1711,6 +1711,17 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     expect(nodes.some(node => node.label === 'Inner')).toBe(false);
     expect(nodes.find(node => node.type === 'button')?.label).toBe('Profile');
     expect(nodes.find(node => node.type === 'img')?.label).toBe('Warning');
+  });
+
+  it("counts a control in an excluded host's shadow root as outside the snapshot, as the walk leaves it out", () => {
+    container.innerHTML = '<app-shadow-proof></app-shadow-proof>';
+    const shadowHost = container.querySelector('app-shadow-proof') as HTMLElement;
+    shadowHost.attachShadow({ mode: 'open' }).innerHTML = '<input aria-label="Name" />';
+    const input = shadowHost.shadowRoot?.querySelector('input') as HTMLInputElement;
+
+    expect(isOutsideSnapshot(input, budgets({ excludeSelectors: ['app-shadow-proof'] }))).toBe(true);
+    expect(isOutsideSnapshot(input, budgets({ rootSelector: 'app-shadow-proof' }))).toBe(false);
+    expect(isOutsideSnapshot(input, budgets())).toBe(false);
   });
 
   it('never reads a style element in a shadow root as text', () => {

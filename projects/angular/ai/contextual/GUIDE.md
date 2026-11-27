@@ -69,3 +69,12 @@ export class Firewall {
 - Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
 - A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
+
+## Writing back
+
+- Nothing is written until the application provides `provideClrMutationPolicy({ classify })`; `confirm` is asked before a `consequential` operation.
+- `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
+- Give the model `CLR_MUTATION_OPERATIONS_SCHEMA` as its tool's input (`@clr/angular/ai/schemas/mutation-operations-1.schema.json` or `https://clarity.design/schemas/mutation-operations-1.schema.json` on a backend); an operation that does not match it, and any past the first 50, is refused.
+- The combobox, the date input and the datagrid's row selection can be written as they are. A custom control of the application is written through its form binding when it renders a role the engine knows (textbox, checkbox or switch, spinbutton or slider, a radio group of radios) and its model holds what it shows; publish that value as `state.value` with `context.publish`. Any other control is refused as `unsupported`.
+- Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
+- A value is set through the form control or the component's own writer, never parsed as JSON or inserted as HTML, so a value holding markup or JSON stays text.
