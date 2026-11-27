@@ -177,7 +177,7 @@ clr-datagrid {
 
     &.cdk-drag-placeholder {
       outline: var(--cds-alias-object-interaction-outline);
-      outline-color: -webkit-focus-ring-color;
+      outline-color: var(--cds-alias-object-interaction-focus-color);
       outline-offset: var(--clr-datagrid-cell-outline-offset);
       z-index: 100;
     }

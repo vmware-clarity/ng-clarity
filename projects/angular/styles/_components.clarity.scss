@@ -26,6 +26,7 @@
 
 @forward '../styles/reboot.clarity'; // depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity
 @forward '../styles/a11y';
+@forward '../styles/focus.clarity'; // depends on mixins.clarity
 
 //Icons & Images
 

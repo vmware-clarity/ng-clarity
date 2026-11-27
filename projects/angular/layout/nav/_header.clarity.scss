@@ -20,6 +20,10 @@
     display: flex;
     color: header-variables.$clr-header-font-color;
     background-color: header-variables.$clr-header-bg-color;
+
+    // The header is dark in every theme, so its focus ring follows its text colour.
+    --cds-alias-object-interaction-focus-color: #{header-variables.$clr-header-font-color};
+
     height: header-variables.$clr-header-height;
     white-space: nowrap;
 

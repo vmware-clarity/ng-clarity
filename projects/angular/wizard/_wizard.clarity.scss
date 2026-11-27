@@ -97,6 +97,11 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         color: inherit;
         background-color: inherit;
 
+        // Steps are stacked in the nav, so the focus ring stays inside the focused one.
+        &:focus-visible {
+          @include mixins.focus-outline-inset();
+        }
+
         cds-icon {
           color: wizard-variables.$clr-wizard-stepnav-link-selected-icon-color;
         }

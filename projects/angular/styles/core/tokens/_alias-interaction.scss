@@ -33,11 +33,15 @@
     --cds-alias-object-interaction-danger-click: var(--cds-global-color-red-900);
     --cds-alias-object-interaction-danger-active: var(--cds-global-color-red-900);
     --cds-alias-object-interaction-danger-secondary-hover: var(--cds-global-color-red-50);
+    // Focus ring colour: the page ink. Surfaces with their own background (header, app-level alert) override it.
+    --cds-alias-object-interaction-focus-color: var(--cds-alias-typography-color-500);
+    --cds-alias-object-interaction-outline: var(--cds-global-space-2) solid
+      var(--cds-alias-object-interaction-focus-color);
+    --cds-alias-object-interaction-outline-webkit: var(--cds-alias-object-interaction-outline);
   }
 
-  --cds-alias-object-interaction-outline: Highlight auto 2px;
-  --cds-alias-object-interaction-outline-webkit: 5px auto -webkit-focus-ring-color;
-  --cds-alias-object-interaction-outline-offset: 1px;
+  --cds-alias-object-interaction-outline-offset: var(--cds-global-space-2);
+  --cds-alias-object-interaction-outline-offset-inset: calc(-1 * var(--cds-global-space-3));
   --cds-alias-object-interaction-touch-target: calc(36 * (1rem / var(--cds-global-base)));
   --cds-alias-object-interaction-border-color: var(--cds-global-color-construction-500);
   --cds-alias-object-interaction-background: var(--cds-global-color-white);

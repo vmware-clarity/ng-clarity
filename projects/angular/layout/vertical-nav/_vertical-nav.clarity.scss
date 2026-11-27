@@ -148,7 +148,10 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
 
       background-color: transparent;
       cursor: pointer;
-      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+
+      &:focus-visible {
+        @include mixins.focus-outline-inset();
+      }
     }
 
     .nav-trigger {
@@ -228,7 +231,10 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
 
       display: flex;
       align-items: center;
-      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+
+      &:focus-visible {
+        @include mixins.focus-outline-inset();
+      }
     }
 
     .nav-group-text,
@@ -298,7 +304,10 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       background: transparent;
       border: none;
       cursor: pointer;
-      outline-offset: calc(-1 * #{mixins.baselinePx(5)});
+
+      &:focus-visible {
+        @include mixins.focus-outline-inset();
+      }
     }
 
     & > .nav-link,

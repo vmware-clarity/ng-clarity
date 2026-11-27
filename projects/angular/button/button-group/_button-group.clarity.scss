@@ -9,6 +9,7 @@
 @use '../mixins.buttons' as button-mixins;
 @use '../variables.buttons' as buttons-variables;
 @use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('button-group.clarity') {
   .btn-group {
@@ -62,6 +63,19 @@
         // using cds-alias-object-interaction-outline token will be better when focus state get implemented
         border: Highlight solid 2px;
       }
+    }
+
+    // Buttons in a group touch their neighbours, so the focus ring sits inside the focused one, in its label colour.
+    // Checkbox and radio buttons draw it on the label, which sits inside the button border.
+    .btn:focus-visible,
+    .btn > input:focus-visible + label {
+      @include mixins.focus-outline-inset($color: currentColor);
+    }
+
+    .btn > input:focus-visible + label {
+      outline-offset: calc(
+        #{tokens.$cds-alias-object-interaction-outline-offset-inset} + #{buttons-variables.$clr-btn-border-width}
+      );
     }
 
     .btn {

@@ -100,11 +100,7 @@
       align-items: center;
 
       &:focus {
-        outline-color: Highlight;
-        outline-color: -webkit-focus-ring-color;
-        outline-style: auto;
-        outline-width: tokens.$cds-global-space-1;
-        outline-offset: calc(-1 * tokens.$cds-global-space-1);
+        @include mixins.focus-outline-inset();
       }
     }
 

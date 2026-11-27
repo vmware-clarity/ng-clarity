@@ -9,7 +9,7 @@
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 
 $clr-logo-width: tokens.$cds-global-space-11 !default;
-$clr-header-outline-offset: calc(-1 * #{tokens.$cds-global-space-4}) !default;
+$clr-header-outline-offset: tokens.$cds-alias-object-interaction-outline-offset-inset !default;
 $clr-header-clarity-icons-size: #{density.$clr-base-icon-size-l} !default;
 
 $clr-header-height: var(--clr-header-height) !default;

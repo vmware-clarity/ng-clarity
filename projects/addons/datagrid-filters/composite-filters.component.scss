@@ -80,7 +80,7 @@
 
   &:focus-visible {
     outline: var(--cds-alias-object-interaction-outline);
-    outline-color: -webkit-focus-ring-color;
+    outline-color: var(--cds-alias-object-interaction-focus-color);
     outline-offset: var(--cds-alias-object-interaction-outline-offset);
   }
 }

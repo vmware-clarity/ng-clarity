@@ -22,16 +22,22 @@ $imported-modules: () !default;
     @content;
   }
 }
+// Focus ring outside an element: 2px in the page ink, with a 2px gap so it never merges with the element's fill.
+// A surface with its own background (header, app-level alert) sets --cds-alias-object-interaction-focus-color
+// to a colour that contrasts with it.
 @mixin include-outline-style-form-fields($offset: var(--cds-alias-object-interaction-outline-offset)) {
-  outline: var(--cds-alias-object-interaction-outline);
-  outline-color: -webkit-focus-ring-color;
+  outline: var(--cds-global-space-2) solid var(--cds-alias-object-interaction-focus-color);
   outline-offset: $offset;
 }
-@mixin include-slim-outline-style-form-fields($width: var(--cds-global-space-2)) {
-  outline-color: Highlight;
-  outline-color: -webkit-focus-ring-color;
-  outline-style: auto;
-  outline-width: $width;
+// Focus ring inside an element that sits in a container (button group, menu, grid, nav), where an outside ring would
+// be clipped or cover a neighbour. It is 3px wide so it still covers the area of a 2px ring around the element
+// (WCAG 2.4.13). Pass `currentColor` for elements with a solid fill of their own, such as grouped buttons.
+@mixin focus-outline-inset(
+  $offset: var(--cds-alias-object-interaction-outline-offset-inset),
+  $color: var(--cds-alias-object-interaction-focus-color)
+) {
+  outline: calc(3 * (1rem / var(--cds-global-base))) solid $color;
+  outline-offset: $offset;
 }
 @mixin overflow-ellipsis($leftAlignment: false) {
   white-space: nowrap;
@@ -58,14 +64,7 @@ $imported-modules: () !default;
 @mixin focus-within() {
   &:focus-within,
   &.focus-within {
-    outline: var(--cds-global-space-2) solid Highlight;
-  }
-
-  @media (-min-device-pixel-ratio: 0) {
-    &:focus-within,
-    &.focus-within {
-      outline: baselinePx(5) auto -webkit-focus-ring-color;
-    }
+    @include include-outline-style-form-fields();
   }
 }
 @mixin equilateral($size: 1.2rem) {

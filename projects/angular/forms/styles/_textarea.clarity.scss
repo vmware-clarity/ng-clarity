@@ -34,14 +34,10 @@
 
     @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
 
+    // Like every text field, the border is the focus indicator.
     &.clr-focus,
     &:focus {
-      // TODO(CDE-863) - Remove outline mixin and convert this component to just use border-color to avoid the white
-      // outline in addition to the intended color on focus
-
-      @include mixins.include-slim-outline-style-form-fields();
-
-      outline-color: forms-variables.$clr-forms-focused-color;
+      outline: none;
       border-color: forms-variables.$clr-forms-focused-color;
     }
 
@@ -55,12 +51,10 @@
 
   .clr-success .clr-textarea {
     border-color: forms-variables.$clr-forms-valid-color;
-    outline-color: forms-variables.$clr-forms-valid-color;
   }
 
   .clr-error .clr-textarea {
     border-color: forms-variables.$clr-forms-invalid-color;
-    outline-color: forms-variables.$clr-forms-invalid-color;
   }
 
   .clr-control-container textarea {

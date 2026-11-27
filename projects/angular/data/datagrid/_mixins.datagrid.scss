@@ -70,9 +70,6 @@
 
     &:focus {
       @include menu-mixins.dropdown-item-outline();
-
-      // We need to override the offset because action-item container in contrast to dropdown and combobox have padding.
-      outline-offset: 0;
     }
   }
 }
