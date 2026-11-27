@@ -7,6 +7,7 @@
 
 import {
   afterNextRender,
+  booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -70,6 +71,9 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
 
   @Input('clrModalLabelledById') labelledBy?: string;
+
+  /** Whether the dialog is modal: sets `aria-modal` and traps focus. `false` also turns off the focus trap. */
+  @Input({ alias: 'clrModalAriaModal', transform: booleanAttribute }) ariaModal = true;
 
   // Legacy inline wizards bypass both scrolling and stack participation unless inOverlay is explicit.
   @Input('clrModalOverrideScrollService') bypassScrollService = false;

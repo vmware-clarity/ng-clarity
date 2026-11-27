@@ -334,6 +334,15 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     return this.treeCells;
   }
 
+  /** Stated only where there is a choice: never without selection, and on a locked row only when selected. */
+  protected get ariaSelected(): boolean | null {
+    if (this.selection.selectionType === SelectionType.None) {
+      return null;
+    }
+    const selected = this.selection.isSelected(this.item);
+    return selected || this.clrDgSelectable ? selected : null;
+  }
+
   /**
    * Some, but not all, of this row's descendants are selected.
    */

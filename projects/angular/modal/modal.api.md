@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -54,6 +55,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
+    ariaModal: boolean;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
@@ -86,6 +88,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
     modalId: string;
+    // (undocumented)
+    static ngAcceptInputType_ariaModal: unknown;
     // (undocumented)
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
@@ -142,6 +146,10 @@ export class ClrModal implements OnChanges, OnDestroy {
         };
         "labelledBy": {
             "alias": "clrModalLabelledById";
+            "required": false;
+        };
+        "ariaModal": {
+            "alias": "clrModalAriaModal";
             "required": false;
         };
         "bypassScrollService": {
