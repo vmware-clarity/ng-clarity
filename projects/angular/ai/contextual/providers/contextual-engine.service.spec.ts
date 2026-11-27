@@ -543,3 +543,26 @@ describe('ClrContextService, asynchronous providers', () => {
     }
   });
 });
+
+describe('ClrContextService, slotted content', () => {
+  let page: HTMLElement;
+
+  beforeEach(() => {
+    page = document.createElement('main');
+    page.innerHTML = '<card-host><input aria-label="Card number" value="4111111111111111" /></card-host>';
+    document.body.appendChild(page);
+    const root = (page.querySelector('card-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = '<div><slot></slot></div><button>Pay</button>';
+    markContext(root.querySelector('div') as Element, 'redact');
+  });
+
+  afterEach(() => page.remove());
+
+  it('withholds what a redacted wrapper in a shadow root shows', async () => {
+    const snapshot = await TestBed.inject(ClrContextService).snapshot();
+    const text = JSON.stringify(snapshot.components);
+
+    expect(text).toContain('Pay');
+    expect(text).not.toContain('4111111111111111');
+  });
+});

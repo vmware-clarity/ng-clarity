@@ -5,19 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  closestContextMark,
-  CLR_CONTEXT_EDITING_HOST_SELECTOR,
-  hasContextMark,
-  isContextHidden,
-  isWithinContextHidden,
-} from '@clr/angular/utils';
+import { CLR_CONTEXT_EDITING_HOST_SELECTOR, hasContextMark, isContextHidden } from '@clr/angular/utils';
 
+import { closestAcrossShadow, closestMarkAcrossShadow, containsAcrossShadow, hasRendered } from './shadow';
 import { CONTROL_SELECTOR } from './tables/selectors';
 
 /** Whether the element is in hidden, inert or ignored markup, or in a region `withheld` selects. */
 export function isHiddenFromContext(element: Element, withheld = ''): boolean {
-  return isWithinContextHidden(element) || (!!withheld && !!element.closest(withheld));
+  return !!closestAcrossShadow(element, isContextHidden) || (!!withheld && !!closestAcrossShadow(element, withheld));
 }
 
 /** {@link isHiddenFromContext} judged on the element alone, for a walk that has already judged its ancestors. */
@@ -34,19 +29,10 @@ export function isUnreadable(element: Element): boolean {
   );
 }
 
-/** Whether the element is in a region {@link isUnreadable} keeps out of names. */
-export function isWithinUnreadable(element: Element): boolean {
-  return (
-    !!closestContextMark(element, 'ignore') ||
-    !!closestContextMark(element, 'redact') ||
-    !!element.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)
-  );
-}
-
 /** Whether a redacted region holds `item` but not `container`, so the item's text is withheld from it. */
 export function isRedactedWithin(item: Element, container: Element): boolean {
-  const redacting = closestContextMark(item, 'redact');
-  return !!redacting && !redacting.contains(container);
+  const redacting = closestMarkAcrossShadow(item, 'redact');
+  return !!redacting && !containsAcrossShadow(redacting, container);
 }
 
 /**
@@ -77,7 +63,7 @@ function isShown(element: Element, judgeOpacity: boolean): boolean {
 }
 
 function reachesControl(element: Element): boolean {
-  return element.matches(CONTROL_SELECTOR) || !!element.querySelector(CONTROL_SELECTOR);
+  return element.matches(CONTROL_SELECTOR) || hasRendered(element, CONTROL_SELECTOR);
 }
 
 /** `Element.checkVisibility`, falling back to computed style where it is missing (jsdom, older browsers). */

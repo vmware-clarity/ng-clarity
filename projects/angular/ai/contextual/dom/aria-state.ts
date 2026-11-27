@@ -6,8 +6,9 @@
  */
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
-import { closestContextMark, ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext } from '@clr/angular/utils';
 
+import { closestMarkAcrossShadow } from './shadow';
 import {
   CONTENT_STATE_KEYS,
   ENUM_ATTRIBUTES,
@@ -210,7 +211,7 @@ function assignValueState(
 
 /** Whether this control's value must be withheld, whatever the caller asked for. */
 export function isRedacted(element: Element, insideRedactedRegion?: boolean): boolean {
-  if (insideRedactedRegion ?? !!closestContextMark(element, 'redact')) {
+  if (insideRedactedRegion ?? !!closestMarkAcrossShadow(element, 'redact')) {
     return true;
   }
   const type = element.getAttribute('type')?.toLowerCase();

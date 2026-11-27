@@ -9,6 +9,7 @@ import { CLR_CONTEXT_EDITING_HOST_SELECTOR, hasContextMark } from '@clr/angular/
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
+import { idScope } from './shadow';
 import { MESSAGE_ROLES } from './tables/roles';
 import { ACTION_SELECTOR } from './tables/selectors';
 import { LABELABLE_TAGS } from './tables/tags';
@@ -144,7 +145,7 @@ function labelsOf(control: Element): Element[] {
   if (!scope) {
     return Array.from((control as HTMLInputElement).labels ?? []);
   }
-  const root = control.ownerDocument;
+  const root = idScope(control);
   let labels = scope.labels.get(root);
   if (!labels) {
     labels = new Map();

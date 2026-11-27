@@ -9,9 +9,10 @@ import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import { isContextHidden } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
+import { closestAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
 import { ACTION_SELECTOR } from './tables/selectors';
 import { SKIPPED_TAGS } from './tables/tags';
-import { isHiddenFromContext, isUnreadable, isVisible, isWithinUnreadable } from './visibility';
+import { isHiddenFromContext, isUnreadable, isVisible } from './visibility';
 
 /** Embeddings and overrides (closed by U+202C) and isolates (closed by U+2069). */
 const OPENING_DIRECTION_MARKS = new Set(['\u202a', '\u202b', '\u202d', '\u202e', '\u2066', '\u2067', '\u2068']);
@@ -142,7 +143,7 @@ function textFor(
     return '';
   }
   let text = '';
-  for (const node of Array.from(element.childNodes)) {
+  for (const node of renderedChildNodes(element)) {
     if (node.nodeType === Node.TEXT_NODE) {
       text += node.textContent ?? '';
       continue;
@@ -152,7 +153,7 @@ function textFor(
       continue;
     }
     const child = node as Element;
-    // A `<style>` or `<script>` is text in the DOM, never on screen.
+    // A shadow root's `<style>` is text in the DOM, never on screen.
     if (
       SKIPPED_TAGS.has(child.tagName.toLowerCase()) ||
       isUnreadable(child) ||
@@ -216,13 +217,13 @@ export function referencedText(
   const following = followingReference;
   followingReference = true;
   try {
-    return textOfReferences(element.ownerDocument, ids, withheld, skip);
+    return textOfReferences(idScope(element), ids, withheld, skip);
   } finally {
     followingReference = following;
   }
 }
 
-function textOfReferences(scope: Document, ids: string[], withheld: string, skip: readonly string[]): string {
+function textOfReferences(scope: IdScope, ids: string[], withheld: string, skip: readonly string[]): string {
   return (
     ids
       .filter(id => !skip.includes(id))
@@ -232,7 +233,7 @@ function textOfReferences(scope: Document, ids: string[], withheld: string, skip
       .filter(
         (referenced): referenced is HTMLElement =>
           !!referenced &&
-          !isWithinUnreadable(referenced) &&
+          !closestAcrossShadow(referenced, isUnreadable) &&
           !isHiddenFromContext(referenced, withheld) &&
           !isUnrendered(referenced)
       )
@@ -243,5 +244,5 @@ function textOfReferences(scope: Document, ids: string[], withheld: string, skip
 }
 
 export function isUnrendered(element: Element, judgeOpacity = true): boolean {
-  return !!element.closest('[hidden]') || !isVisible(element, judgeOpacity);
+  return !!closestAcrossShadow(element, '[hidden]') || !isVisible(element, judgeOpacity);
 }

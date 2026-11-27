@@ -67,4 +67,4 @@ export class Firewall {
 - A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
 - Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
 - A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
-- Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.
+- Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.

@@ -44,6 +44,10 @@
         <a routerLink="/documentation/contextual-engine/code" fragment="element-context">Publish a component's state</a
         >.
       </li>
+      <li>
+        It walks into open shadow roots, so a web component is described by what it renders, with slotted content where
+        its slots place it.
+      </li>
       <li>Each snapshot is read from the live page when you ask for it. Nothing is cached.</li>
       <li>Reading never changes the page.</li>
     </ul>
@@ -63,7 +67,7 @@
         What is not rendered, such as rows a virtual scroller has not drawn, or a chart drawn on a
         <code cds-text="code">canvas</code>. Add those with an annotation.
       </li>
-      <li>Shadow roots and cross-origin frames. Same-origin frames are read.</li>
+      <li>Closed shadow roots and cross-origin frames. Open shadow roots and same-origin frames are read.</li>
       <li>
         Hidden text that <code cds-text="code">aria-labelledby</code> or
         <code cds-text="code">aria-describedby</code> points at. No user sees it, so it could carry instructions meant
