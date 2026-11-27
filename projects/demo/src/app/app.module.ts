@@ -10,18 +10,39 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
+import { ClrContextIgnore, provideClrMutationPolicy } from '@clr/angular/ai';
 
 import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
 import { cdsThemePathLocationStrategyProvider } from './cds-theme-path-location-strategy';
 import { CdsThemeSelectComponent } from './cds-theme-select.component';
 import { AppContentContainerComponent } from './content-container.component';
+import { ContextInspectorComponent } from './context-inspector/context-inspector.component';
 import { LandingComponent } from './landing.component';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, AppContentContainerComponent, CdsThemeSelectComponent],
-  imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
-  providers: [cdsThemePathLocationStrategyProvider],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    AppContentContainerComponent,
+    CdsThemeSelectComponent,
+    ContextInspectorComponent,
+  ],
+  imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ClrContextIgnore, ROUTING],
+  providers: [
+    cdsThemePathLocationStrategyProvider,
+    // Demo mutation policy: fields inside `data-agent-fill` are reversible, leaving the page without
+    // query parameters needs confirmation, and everything else is forbidden.
+    provideClrMutationPolicy({
+      classify: target => {
+        if (target.operation === 'navigate') {
+          return Object.keys(target.queryParams ?? {}).length ? 'forbidden' : 'consequential';
+        }
+        return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+      },
+      confirm: target => window.confirm(`Let the agent go to ${target.url}?`),
+    }),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClarityIcons, ClrIcon, errorStandardIcon, folderOpenIcon, successStandardIcon } from '@clr/angular/icon';
+import { ClrContextIgnore, ClrContextRedact } from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
@@ -19,7 +20,7 @@ import { ClrFileError, ClrFileInfo, ClrFileSuccess } from './file-messages';
 import { ClrFileMessagesTemplate } from './file-messages-template';
 
 @NgModule({
-  imports: [CommonModule, ClrIcon, ClrCommonFormsModule],
+  imports: [ClrContextIgnore, ClrContextRedact, CommonModule, ClrIcon, ClrCommonFormsModule],
   declarations: [
     ClrFileInput,
     ClrFileInputContainer,

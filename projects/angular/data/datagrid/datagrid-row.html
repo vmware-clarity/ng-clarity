@@ -8,6 +8,7 @@
 <div
   role="row"
   [id]="id"
+  [attr.aria-selected]="ariaSelected"
   class="datagrid-row-master datagrid-row-flex"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected, $event)"
@@ -27,6 +28,7 @@
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
+        clrContextIgnore
       >
         <div class="clr-checkbox-wrapper">
           <input
@@ -50,6 +52,7 @@
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
+        clrContextIgnore
       >
         <clr-radio-wrapper>
           <input

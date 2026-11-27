@@ -1,0 +1,777 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CLR_CONTEXT_DEFAULT_OPTIONS, ClrContextService } from '@clr/angular/ai';
+import { publishedOn } from '@clr/angular/testing';
+import {
+  ClrComponentContext,
+  ClrContextIgnore,
+  ClrContextRedact,
+  ClrContextSnapshotOptions,
+  ClrLoadingModule,
+  elementContextOf,
+  elementMutatorOf,
+  markContext,
+} from '@clr/angular/utils';
+
+import { ClrCombobox } from './combobox';
+import { ClrComboboxModule } from './combobox.module';
+
+/** Creates a fixture and lets its comboboxes settle. */
+async function create<C>(component: Type<C>, imports: unknown[] = []): Promise<ComponentFixture<C>> {
+  TestBed.configureTestingModule({
+    imports: [ClrComboboxModule, ClrContextIgnore, ClrContextRedact, FormsModule, NoopAnimationsModule, ...imports],
+    declarations: [component],
+  });
+  const fixture = TestBed.createComponent(component);
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+  return fixture;
+}
+
+/** What the fixture's first combobox, or the one `selector` matches, publishes. */
+function published(
+  fixture: ComponentFixture<unknown>,
+  selector = 'clr-combobox',
+  options: ClrContextSnapshotOptions = {}
+): { type: string; state: Record<string, unknown> } {
+  return publishedOn(fixture.nativeElement.querySelector(selector), options) as {
+    type: string;
+    state: Record<string, unknown>;
+  };
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="fruit" [(ngModel)]="selection">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class TestComponent {
+  selection: string | null = 'apple';
+}
+
+describe('ClrCombobox element context', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let host: HTMLElement;
+
+  beforeEach(async () => {
+    fixture = await create(TestComponent);
+    host = fixture.nativeElement.querySelector('clr-combobox');
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('publishes a context callback on its host element', () => {
+    const context = published(fixture);
+
+    expect(context.type).toBe('combobox');
+    expect(context.state.multiSelect).toBe(false);
+  });
+
+  it('lists its options even while the popover is closed', () => {
+    const context = published(fixture);
+
+    expect(context.state.options).toEqual(['Apple', 'Pear']);
+    expect(context.state.optionsAvailable).toBeUndefined();
+  });
+
+  it('exposes the current selection, which a closed popover does not show', () => {
+    expect(published(fixture).state.value).toBe('Apple');
+  });
+
+  it('lists the same options while the popover is open, without screen reader additions', () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+
+    const context = published(fixture);
+
+    expect(context.state.options).toEqual(['Apple', 'Pear']);
+  });
+
+  it('is described once while open, not again as the list in its overlay', async () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+
+    const types: string[] = [];
+    const visit = (nodes: ClrComponentContext[]) =>
+      nodes.forEach(node => {
+        types.push(node.type);
+        visit(node.children ?? []);
+      });
+    visit((await TestBed.inject(ClrContextService).snapshot()).components);
+
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+    expect(types).toContain('combobox');
+    expect(types).not.toContain('listbox');
+    expect(types).not.toContain('dialog');
+  });
+
+  it('removes the callback when the combobox is destroyed', () => {
+    fixture.destroy();
+
+    expect(elementContextOf(host)).toBeUndefined();
+  });
+});
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="fruits" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+        <clr-option clrValue="plum">Plum</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="async" [(ngModel)]="asyncSelection" class="async"></clr-combobox>
+    <clr-combobox name="account" [(ngModel)]="account" class="object"></clr-combobox>
+  `,
+  standalone: false,
+})
+class MoreShapesTestComponent {
+  selection: string[] = ['apple', 'plum'];
+  asyncSelection: string | null = null;
+  account: object | null = { id: 42, email: 'hidden@example.com', internalNote: 'do not show' };
+}
+
+describe('ClrCombobox element context, other shapes', () => {
+  let fixture: ComponentFixture<MoreShapesTestComponent>;
+
+  beforeEach(async () => {
+    fixture = await create(MoreShapesTestComponent);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('reports every selected value of a multi-select combobox', () => {
+    const context = published(fixture, 'clr-combobox');
+    expect(context.state.multiSelect).toBe(true);
+    expect(context.state.value).toEqual(['Apple', 'Plum']);
+  });
+
+  it('is not described again through its selection pills, which would count the selection', async () => {
+    const grids: ClrComponentContext[] = [];
+    const visit = (nodes: ClrComponentContext[]) =>
+      nodes.forEach(node => {
+        if (node.type === 'grid') {
+          grids.push(node);
+        }
+        visit(node.children ?? []);
+      });
+    visit((await TestBed.inject(ClrContextService).snapshot()).components);
+
+    expect(fixture.nativeElement.querySelector('.clr-combobox-pills[role="grid"]')).not.toBeNull();
+    expect(grids).toEqual([]);
+  });
+
+  it('says that an async combobox has no options until a search loads them', () => {
+    const context = published(fixture, 'clr-combobox.async');
+    expect(context.state.optionsAvailable).toBe(false);
+    expect('options' in context.state).toBe(false);
+  });
+
+  it('never publishes a model object it has no label for', async () => {
+    await fixture.whenStable();
+    const context = published(fixture, 'clr-combobox.object');
+
+    expect(context.state.value).toBeNull();
+    expect(JSON.stringify(context)).not.toContain('hidden@example.com');
+  });
+});
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="card" [(ngModel)]="selection">
+      <clr-options>
+        <clr-option clrValue="visa">Visa <span clrContextRedact>4111 1111</span></clr-option>
+        <clr-option clrValue="amex">Amex <span clrContextRedact>3782 8224</span></clr-option>
+        <clr-option clrValue="6011 0000"><span clrContextRedact>6011 0000</span></clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class SecretOptionTestComponent {
+  selection: string | null = 'visa';
+}
+
+describe('ClrCombobox element context, withheld option text', () => {
+  let fixture: ComponentFixture<SecretOptionTestComponent>;
+
+  beforeEach(async () => {
+    fixture = await create(SecretOptionTestComponent);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('labels options and the selection without the text of a redacted element inside them', () => {
+    const context = published(fixture);
+
+    expect(context.state['value']).toBe('Visa');
+    expect(JSON.stringify(context)).not.toContain('4111');
+    expect(JSON.stringify(context)).not.toContain('3782');
+    // Nor by its value when all its text is withheld: the value is often the same secret.
+    expect(JSON.stringify(context)).not.toContain('6011');
+  });
+
+  it('counts an option whose text is all withheld as redacted, rather than listing it unnamed', () => {
+    const context = published(fixture);
+
+    expect(context.state['options']).toEqual(['Visa', 'Amex']);
+    expect(context.state['redactedOptions']).toBe(1);
+  });
+
+  it('reports a selected option whose text is all withheld as unnamed', async () => {
+    fixture.componentInstance.selection = '6011 0000';
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(published(fixture).state['value']).toBeNull();
+  });
+});
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="plan" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option-group clrOptionGroupLabel="Public">
+          <clr-option *clrOptionItems="let plan of publicPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Internal" clrContextIgnore>
+          <clr-option *clrOptionItems="let plan of internalPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Retired" hidden>
+          <clr-option *clrOptionItems="let plan of retiredPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Draft" aria-hidden="true">
+          <clr-option *clrOptionItems="let plan of draftPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class HiddenGroupTestComponent {
+  publicPlans = ['Basic', 'Pro'];
+  internalPlans = ['Secret plan'];
+  retiredPlans = ['Legacy plan'];
+  draftPlans = ['Draft plan'];
+  selection: string[] = ['Pro', 'Secret plan'];
+}
+
+describe('ClrCombobox element context, options in a group page-context tooling does not see', () => {
+  let fixture: ComponentFixture<HiddenGroupTestComponent>;
+
+  beforeEach(async () => {
+    fixture = await create(HiddenGroupTestComponent);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('leaves out the options of an ignored, hidden or aria-hidden group, as the walk leaves out the group', () => {
+    const context = published(fixture);
+
+    expect(context.state['options']).toEqual(['Basic', 'Pro']);
+    expect('redactedOptions' in context.state).toBe(false);
+    expect(context.state['value']).toEqual(['Pro']);
+    expect(JSON.stringify(context)).not.toMatch(/Secret|Legacy|Draft/);
+  });
+});
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="account" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option clrValue="checking">Checking</clr-option>
+        <clr-option clrValue="acct" clrContextRedact>Acct 998877</clr-option>
+        <clr-option clrValue="trust" class="secret">Hidden trust fund</clr-option>
+        <clr-option clrValue="savings"><span class="secret">ACC-42</span> Savings</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class MarkedOptionTestComponent {
+  selection: string[] = ['acct', 'trust', 'savings'];
+}
+
+describe('ClrCombobox element context, options marked or excluded themselves', () => {
+  let fixture: ComponentFixture<MarkedOptionTestComponent>;
+  const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, excludeSelectors: ['.secret'] };
+
+  beforeEach(async () => {
+    fixture = await create(MarkedOptionTestComponent);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
+  }
+
+  it('counts a redacted option without naming it, and leaves an excluded one out', () => {
+    const context = published(fixture, 'clr-combobox', options);
+
+    expect(context.state['options']).toEqual(['Checking', 'Savings']);
+    expect(context.state['redactedOptions']).toBe(1);
+    expect(context.state['value']).toEqual([null, 'Savings']);
+    expect(JSON.stringify(context)).not.toContain('998877');
+    expect(JSON.stringify(context)).not.toContain('trust fund');
+  });
+
+  it('neither lists nor takes them in a write, and keeps them selected', () => {
+    const mutator = publishedMutator();
+    const refused = mutator?.coerce('Nope', options);
+    expect(refused?.refused).toContain('"Checking"');
+    expect(refused?.refused).not.toContain('998877');
+    expect(refused?.refused).not.toContain('trust fund');
+    expect(refused?.refused).not.toContain('ACC-42');
+    expect(mutator?.coerce('Hidden trust fund', options).refused).toBeDefined();
+
+    expect(mutator?.coerce('Checking', options).value).toEqual(['acct', 'trust', 'checking']);
+    expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
+  });
+
+  it('leaves excluded text inside an option out of its label and out of the selection', () => {
+    expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toContain('ACC-42');
+  });
+
+  it('lists no options from a list kept from agents', () => {
+    // The list is not in the page while the popover is closed, so it is reached through the component.
+    const combobox: ClrCombobox<string> = fixture.debugElement.query(By.directive(ClrCombobox)).componentInstance;
+    const list: HTMLElement = combobox['options'].el.nativeElement;
+    markContext(list, 'ignore');
+
+    expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toMatch(/Checking|Savings/);
+  });
+});
+
+interface Account {
+  id: number;
+  label: string;
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="account" [(ngModel)]="selection" [clrComboboxIdentityFn]="byId">
+      <ng-container *clrOptionSelected="let selected">{{ selected?.label }}</ng-container>
+      <clr-options>
+        <clr-option
+          *clrOptionItems="let account of accounts; field: 'label'"
+          [clrValue]="account"
+          [clrContextRedact]="account.id === 2"
+        >
+          {{ account.label }}
+        </clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class IdentityTestComponent {
+  accounts: Account[] = [
+    { id: 1, label: 'Ops budget' },
+    { id: 2, label: 'Acct 998877' },
+  ];
+  // The same record as the redacted option, loaded apart from the options.
+  selection: Account | null = { id: 2, label: 'Acct 998877' };
+  byId = (account: Account) => account?.id;
+}
+
+describe('ClrCombobox element context, options matched by identity', () => {
+  let fixture: ComponentFixture<IdentityTestComponent>;
+
+  beforeEach(async () => {
+    fixture = await create(IdentityTestComponent);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
+  }
+
+  it('withholds a redacted selection matched by clrComboboxIdentityFn rather than by reference', () => {
+    const context = published(fixture);
+
+    expect(context.state['value']).toBeNull();
+    expect(context.state['redactedOptions']).toBe(1);
+    expect(JSON.stringify(context)).not.toContain('998877');
+  });
+
+  it('refuses to replace that selection', () => {
+    expect(publishedMutator()?.coerce('Ops budget', CLR_CONTEXT_DEFAULT_OPTIONS).refused).toBe(
+      'The current choice is kept from agents, and cannot be changed by one.'
+    );
+  });
+
+  it('names a selection the agent may see when it matches an option by identity', async () => {
+    fixture.componentInstance.selection = { id: 1, label: 'Ops budget' };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(published(fixture).state['value']).toBe('Ops budget');
+    expect(publishedMutator()?.coerce({ id: 1 }, CLR_CONTEXT_DEFAULT_OPTIONS).value).toBe(
+      fixture.componentInstance.accounts[0]
+    );
+  });
+});
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true" [clrLoading]="loading">
+      <clr-options>
+        <clr-option
+          *clrOptionItems="let person of people"
+          [clrValue]="person"
+          [clrContextRedact]="person === 'Eve Smithers'"
+          >{{ person }}</clr-option
+        >
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="fruit" class="static" [(ngModel)]="fruit">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="port" class="options-loading" [(ngModel)]="port">
+      <clr-options [clrLoading]="optionsLoading">
+        <clr-option *clrOptionItems="let name of ports" [clrValue]="name">{{ name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
+    @if (memberShown) {
+      <clr-combobox
+        name="member"
+        class="async-search"
+        [(ngModel)]="member"
+        [clrLoading]="memberLoading"
+        (clrInputChange)="search($event)"
+      >
+        <clr-options>
+          @for (name of results; track name) {
+            <clr-option [clrValue]="name">{{ name }}</clr-option>
+          }
+        </clr-options>
+      </clr-combobox>
+    }
+    <clr-combobox name="city" class="mixed" [(ngModel)]="city">
+      <clr-options>
+        <clr-option clrValue="elsewhere">Somewhere else</clr-option>
+        <clr-option *clrOptionItems="let name of cities" [clrValue]="name">{{ name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="drink" class="static-listened" [(ngModel)]="drink" (clrInputChange)="typed.push($event)">
+      <clr-options>
+        <clr-option clrValue="tea">Tea</clr-option>
+        <clr-option clrValue="coffee">Coffee</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox
+      name="team"
+      class="async-multi"
+      [(ngModel)]="team"
+      clrMulti="true"
+      (clrInputChange)="searchTeam($event)"
+    >
+      <ng-container *clrOptionSelected="let name">{{ name }}</ng-container>
+      <clr-options>
+        @for (name of teamResults; track name) {
+          <clr-option [clrValue]="name">{{ name }}</clr-option>
+        }
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class FilteredOptionsTestComponent {
+  fruit: string | null = null;
+  city: string | null = null;
+  cities = ['Sofia', 'Plovdiv', 'Varna'];
+  loading = false;
+  optionsLoading = false;
+  port: string | null = null;
+  member: string | null = null;
+  results: string[] = [];
+  memberLoading = false;
+  memberShown = true;
+  ignoreEmptySearch = false;
+  drink: string | null = null;
+  typed: string[] = [];
+  team: string[] = [];
+  teamResults: string[] = [];
+  ports = ['Burgas', 'Ruse'];
+  people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
+  selection: string | null = null;
+
+  search(text: string) {
+    if (!text && this.ignoreEmptySearch) {
+      return;
+    }
+    this.results = this.matches(text);
+  }
+
+  searchTeam(text: string) {
+    if (!text && this.ignoreEmptySearch) {
+      return;
+    }
+    this.teamResults = this.matches(text);
+  }
+
+  private matches(text: string) {
+    return this.people.filter(person => person.includes(text) && person !== 'Eve Smithers');
+  }
+}
+
+describe('ClrCombobox element context, options narrowed to what the user typed', () => {
+  let fixture: ComponentFixture<FilteredOptionsTestComponent>;
+
+  /** Renders what the test changed on the host, as the application would after changing its own fields. */
+  async function settle() {
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  }
+
+  function open(selector = 'clr-combobox') {
+    fixture.nativeElement.querySelector(`${selector} button.clr-combobox-trigger`).click();
+    fixture.detectChanges();
+  }
+
+  function type(text: string, selector = 'clr-combobox') {
+    const input = fixture.nativeElement.querySelector(`${selector} input`) as HTMLInputElement;
+    input.value = text;
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+  }
+
+  beforeEach(async () => {
+    fixture = await create(FilteredOptionsTestComponent, [ClrLoadingModule]);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('lists every option before anything is typed', () => {
+    expect(published(fixture).state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
+    expect(published(fixture).state['redactedOptions']).toBe(1);
+  });
+
+  it('lists the options that match the text typed apart from the full list', () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+    type('Smi');
+
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture).state['redactedMatchingOptions']).toBe(1);
+    expect(published(fixture).state['options']).toBeUndefined();
+  });
+
+  it('says that nothing matches the text typed', () => {
+    open();
+    type('Zzq');
+
+    expect(published(fixture).state['matchingOptions']).toEqual([]);
+    expect(published(fixture).state['optionsAvailable']).toBeUndefined();
+  });
+
+  it('says the matches are still loading while a search runs, rather than that none match', async () => {
+    fixture.componentInstance.loading = true;
+    await settle();
+    open();
+    type('Smi');
+
+    // The matches shown so far stay listed: the user sees them, and an agent may pick one.
+    expect(published(fixture).state['matchingOptionsPending']).toBe(true);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+
+    fixture.componentInstance.loading = false;
+    await settle();
+
+    expect(published(fixture).state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+  });
+
+  it('says the matches are pending when the search starts after the user typed', async () => {
+    open();
+    type('Smi');
+    fixture.componentInstance.loading = true;
+    await settle();
+
+    expect(published(fixture).state['matchingOptionsPending']).toBe(true);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+  });
+
+  it('reads clrLoading on the combobox only, where it drives what the user sees', async () => {
+    fixture.componentInstance.optionsLoading = true;
+    await settle();
+    open('.options-loading');
+    type('Bur', '.options-loading');
+
+    expect(published(fixture, '.options-loading').state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture, '.options-loading').state['matchingOptions']).toEqual(['Burgas']);
+  });
+
+  it('says a search started before anything was typed is still running', async () => {
+    fixture.componentInstance.loading = true;
+    await settle();
+
+    expect(published(fixture).state['optionsPending']).toBe(true);
+    expect(published(fixture).state['options']).toBeDefined();
+  });
+
+  it('lists the results of a search the application runs for the typed text as matches', () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
+  });
+
+  it('keeps the previous results as matches after the typed text is cleared, until the application replaces them', () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-search');
+    type('Smi', '.async-search');
+    type('', '.async-search');
+
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
+  });
+
+  it('does not reveal a pick through the results the application loads for its label', async () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+    const alice = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Alice Smith')
+    );
+    alice?.click();
+    await settle();
+
+    expect(fixture.componentInstance.member).toBe('Alice Smith');
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
+  });
+
+  it('says an application search has no results yet before anything is typed', () => {
+    expect(published(fixture, '.async-search').state['optionsAvailable']).toBe(false);
+  });
+
+  it('says a search started after the typed text was cleared is running, and keeps the list it replaces as matches', async () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-search');
+    type('Smi', '.async-search');
+    type('', '.async-search');
+    fixture.componentInstance.memberLoading = true;
+    await settle();
+
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['optionsPending']).toBe(true);
+  });
+
+  it('lists even written-out options as matches when the application listens to clrInputChange', () => {
+    expect(published(fixture, '.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
+    expect(published(fixture, '.static-listened').state['options']).toBeUndefined();
+  });
+
+  it('lists the results the application kept from a search typed into an earlier instance as matches', async () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+    fixture.componentInstance.memberShown = false;
+    await settle();
+    fixture.componentInstance.memberShown = true;
+    await settle();
+
+    expect(fixture.nativeElement.querySelector('.async-search input').value).toBe('');
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
+  });
+
+  it('lists the results a multi-select keeps after closing as matches, when the application ignores the empty search', async () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-multi');
+    type('Smi', '.async-multi');
+    const alice = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Alice Smith')
+    );
+    if (!alice) {
+      throw new Error('expected the search to list Alice Smith');
+    }
+    alice.click();
+    await settle();
+    open('.async-multi'); // the trigger toggles, so this closes the popover
+    await settle();
+
+    expect(fixture.nativeElement.querySelector('.async-multi input').getAttribute('aria-expanded')).toBe('false');
+    expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
+    expect(published(fixture, '.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-multi').state['options']).toBeUndefined();
+  });
+
+  it('lists every option of a list that mixes written-out options with *clrOptionItems as matches', () => {
+    open('.mixed');
+    type('Var', '.mixed');
+
+    expect(published(fixture, '.mixed').state['matchingOptions']).toEqual(['Somewhere else', 'Varna']);
+  });
+
+  it('lists the picked option as a match when an editable combobox with a value is opened again', async () => {
+    fixture.componentInstance.selection = 'Bob Jones';
+    await settle();
+    open();
+    await settle();
+
+    expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
+  });
+
+  it('keeps listing options written out one by one, which typing does not narrow', () => {
+    open('.static');
+    type('Pe', '.static');
+
+    expect(document.querySelectorAll('[role="listbox"] [role="option"]').length).toBe(2);
+    expect(published(fixture, '.static').state['options']).toEqual(['Apple', 'Pear']);
+    expect(published(fixture, '.static').state['matchingOptions']).toBeUndefined();
+  });
+
+  it('lists the one option left after an editable combobox closes on a pick as a match', async () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+    const bob = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Bob Jones')
+    );
+    bob?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.selection).toBe('Bob Jones');
+    expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
+  });
+});

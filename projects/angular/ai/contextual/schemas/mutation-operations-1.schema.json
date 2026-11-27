@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clarity.design/schemas/mutation-operations-1.schema.json",
+  "title": "ClrMutationOperations",
+  "type": "array",
+  "maxItems": 50,
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "required": [
+          "operation",
+          "ref",
+          "value"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "const": "setValue"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "value": {}
+        }
+      },
+      {
+        "type": "object",
+        "required": [
+          "operation",
+          "ref"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "const": "clear"
+          },
+          "ref": {
+            "type": "string"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "required": [
+          "operation",
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "operation": {
+            "const": "navigate"
+          },
+          "path": {
+            "type": "string"
+          },
+          "params": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "queryParams": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

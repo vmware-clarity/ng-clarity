@@ -854,6 +854,23 @@
           <td class="hidden-xs-down">Close alert</td>
           <td class="left">Overwrite default aria-label for close alert button</td>
         </tr>
+
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrAlertRole]</b>
+            <div class="hidden-sm-up">Type: 'alert', 'status', null</div>
+            <div class="hidden-sm-up">Default: chosen by the alert</div>
+          </td>
+          <td class="left hidden-xs-down">'alert', 'status', null</td>
+          <td class="hidden-xs-down">chosen by the alert</td>
+          <td class="left">
+            The live-region role of the alert's content. By default an app-level danger or warning is an
+            <code cds-text="code">alert</code>, which interrupts; every other alert is a
+            <code cds-text="code">status</code>, which waits its turn; and an alert inside a live region the application
+            already has adds none. <code cds-text="code">null</code> renders no live region, for an application that
+            announces the message itself.
+          </td>
+        </tr>
       </tbody>
     </table>
 

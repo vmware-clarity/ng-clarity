@@ -19,7 +19,7 @@ import {
 } from '@clr/angular/icon';
 import { ClrVerticalNavModule } from '@clr/angular/layout/vertical-nav';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
-import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule } from '@clr/angular/utils';
+import { CdkTrapFocusModule, ClrConditionalModule, ClrContextIgnore, ClrHostWrappingModule } from '@clr/angular/utils';
 
 import { ClrCalendar } from './calendar';
 import { ClrDateContainer } from './date-container';
@@ -53,6 +53,7 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[] = [
 
 @NgModule({
   imports: [
+    ClrContextIgnore,
     CommonModule,
     CdkTrapFocusModule,
     ClrHostWrappingModule,

@@ -1,0 +1,952 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<p class="clr-mt-24px" cds-text="body">
+  Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page,
+  <code cds-text="code">configure(&#123; application &#125;)</code> to name the application, and
+  <code cds-text="code">clrContextRedact</code> for fields that hold secrets. Everything else is for finer control.
+</p>
+
+<h2 id="services" cds-text="title" class="clr-mt-24px">Services</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Reads the page and returns it as a snapshot. Nothing is cached: every snapshot reads the page as it is.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">configure(config)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Sets how the application wants its context read (see Configuration below). Call it once, at startup. A second
+        call replaces the whole configuration, and a snapshot taken before it uses the defaults.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">snapshot(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Describes the page as it is now. <code cds-text="code">options</code> apply over the configured
+        <code cds-text="code">scope</code> (see Snapshot options below). It first waits for providers that answer with a
+        promise, up to <code cds-text="code">timeoutMs</code> each.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">publish(element, read)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Publishes what the DOM cannot show about an element, such as a component's own host.
+        <code cds-text="code">read</code> is called on every snapshot and merged into the element's node; a
+        <code cds-text="code">[clrContext]</code> on the element merges on top. Returns the teardown.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Lets frames embedded in this page ask for this page's context. It does not describe the frames. Frames are
+        untrusted callers (see Frame bridge and Untrusted callers below).
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">disableFrameBridge()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops answering frames.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">requestHostContext(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext | null&gt;</code></td>
+      <td class="left">
+        For an application running inside a frame: asks the page that embeds it for its context. Resolves with
+        <code cds-text="code">null</code> when the host does not answer, or answers with a context that does not match
+        the snapshot schema, as a host on another Clarity version might.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="configuration" cds-text="subsection" class="clr-mt-24px">Configuration</h4>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextConfig</code>, passed to <code cds-text="code">configure()</code>. Every key is
+  optional.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Key</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">scope</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'full'</code></td>
+      <td class="left">What every snapshot reads: a preset name or snapshot options (see Snapshot options below).</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">routes</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
+      <td class="left">
+        Lists the router's routes in <code cds-text="code">availableRoutes</code>, so an agent can suggest a page that
+        is not linked from the current one.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">extractors</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
+      <td class="left">
+        Describe markup the engine cannot understand on its own, such as an element from another library with no role
+        and no name. Each is a <code cds-text="code">ClrContextDomExtractor</code>: a
+        <code cds-text="code">selector</code> and an <code cds-text="code">extract(element, options)</code> function.
+        Its answer replaces the element and everything inside it.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">timeoutMs</b></td>
+      <td class="left clr-hidden-xs-down">2000</td>
+      <td class="left">
+        How long a snapshot waits for each provider that answers with a promise. A provider that fails or is too slow
+        appears as a region of type <code cds-text="code">'clr-unavailable'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down">the host name</td>
+      <td class="left">
+        Names the application: a <code cds-text="code">ClrApplicationContext</code> with an
+        <code cds-text="code">id</code>, such as <code cds-text="code">'inventory'</code>, and an optional
+        <code cds-text="code">version</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">views</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'all'</code></td>
+      <td class="left">
+        <code cds-text="code">'all'</code> reads every view. <code cds-text="code">'enabled'</code> reads only views
+        whose root has a <code cds-text="code">[clrContext]</code>, and reports the rest as
+        <code cds-text="code">enabled: false</code> with nothing about the page.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="frame-bridge" cds-text="subsection" class="clr-mt-24px">Frame bridge</h4>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextFrameHostOptions</code>, for <code cds-text="code">enableFrameBridge()</code> on the
+  page that embeds the frames.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">allowedOrigins</b></td>
+      <td class="left clr-hidden-xs-down">the page's origin</td>
+      <td class="left">The origins of frames that may ask. <code cds-text="code">'*'</code> is ignored.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">allowAnyOrigin</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
+      <td class="left">Answers any frame that asks. Use it only when snapshots hold nothing a stranger may not see.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">shareFormValues, shareFullUrl</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
+      <td class="left">Share what the user entered, or the full address and title (see Untrusted callers below).</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">snapshot</b></td>
+      <td class="left clr-hidden-xs-down">—</td>
+      <td class="left">Snapshot options that cap what a frame may ask for. A frame can ask for less, never more.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">minRequestIntervalMs</b></td>
+      <td class="left clr-hidden-xs-down">200</td>
+      <td class="left">
+        The shortest time between two answers to one frame. <code cds-text="code">0</code> turns this off.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextFrameRequestOptions</code>, for <code cds-text="code">requestHostContext()</code>
+  inside the frame:
+  <code cds-text="code">targetWindow</code> (the window to ask, <code cds-text="code">window.parent</code> by default),
+  <code cds-text="code">hostOrigin</code> (the only origin an answer is accepted from),
+  <code cds-text="code">timeoutMs</code> (2000 by default) and <code cds-text="code">options</code> (snapshot options to
+  ask the host for).
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Adds context that no element shows, such as a workflow model held in a service. Register a
+  <code cds-text="code">ClrContextProvider</code>, an object with a <code cds-text="code">getClrContext()</code> method,
+  and the engine calls it on every snapshot. The answer appears in the snapshot's <code cds-text="code">regions</code>.
+  Context about an element goes on the element with <code cds-text="code">[clrContext]</code> instead.
+</p>
+<div class="clr-mt-16px">
+  <app-code-snippet [code]="registryExample" language="typescript"></app-code-snippet>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">register(provider)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Adds a provider and returns a function that removes it. <code cds-text="code">getClrContext()</code> returns a
+        <code cds-text="code">ClrPublishedContext</code>, or <code cds-text="code">null</code> when there is nothing to
+        say. It may also return a promise, which <code cds-text="code">snapshot()</code> waits for.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">unregister(provider)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Removes a provider, typically in <code cds-text="code">ngOnDestroy</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrMutationService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Lets an agent fill in form fields and navigate. It never submits or clicks. It does nothing until the application
+  provides a <code cds-text="code">ClrMutationPolicy</code>. Its results include the values on the page, so keep them
+  inside the application.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">apply(operations, snapshotOptions?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrMutationReport&gt;</code></td>
+      <td class="left">
+        Runs the operations in order and returns a report: what each one did or why it was refused, a new snapshot, and
+        what changed. Show the refusals in the chat panel from this report. A refused operation does not stop the rest.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">plan(operations, snapshotOptions?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrMutationPlanEntry[]</code></td>
+      <td class="left">
+        Says what <code cds-text="code">apply()</code> would do, without doing it. Pass the same
+        <code cds-text="code">snapshotOptions</code> as to <code cds-text="code">apply()</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px">Operations</h4>
+<p class="clr-mt-16px" cds-text="body">
+  Each is a <code cds-text="code">ClrMutationOperation</code>, with <code cds-text="code">operation</code> set to its
+  name.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  Their JSON Schema ships as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/mutation-operations-1.schema.json</code> and as
+  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/mutation-operations-1.schema.json"
+    >clarity.design/schemas/mutation-operations-1.schema.json</a
+  >. It holds no references, so it fits a tool definition as
+  <code cds-text="code"
+    >&#123; type: 'object', properties: &#123; operations: CLR_MUTATION_OPERATIONS_SCHEMA &#125; &#125;</code
+  >, and a backend validates what a model proposes with it. <code cds-text="code">apply()</code> and
+  <code cds-text="code">plan()</code> refuse an operation that does not match it as
+  <code cds-text="code">unsupported</code>, naming the field, and every operation past the first
+  <code cds-text="code">CLR_MUTATION_MAX_OPERATIONS</code> (50).
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Operation</th>
+      <th class="left clr-hidden-xs-down">Fields</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">setValue</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ref</code>, <code cds-text="code">value</code></td>
+      <td class="left">
+        Gives a field a value: text, a number, <code cds-text="code">true</code> or <code cds-text="code">false</code>,
+        an option's label, a date, or the rows to select. <code cds-text="code">ref</code> comes from the snapshot.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clear</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">ref</code>
+      </td>
+      <td class="left">Empties a field.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">navigate</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">path</code>, <code cds-text="code">params?</code>,
+        <code cds-text="code">queryParams?</code>
+      </td>
+      <td class="left">
+        Goes to a route of the application through the router, with route guards applied.
+        <code cds-text="code">path</code> is the pattern as <code cds-text="code">availableRoutes</code> lists it, such
+        as <code cds-text="code">clusters/:id</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px">Results</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">applied</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">Whether the operation took effect.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">value, previous</b></td>
+      <td class="left clr-hidden-xs-down">unknown</td>
+      <td class="left">The field's value now and before, so the application can undo it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">status, errors</b></td>
+      <td class="left clr-hidden-xs-down">String, Object</td>
+      <td class="left">The form control's validity and validation errors after the write.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">outcome, url</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        For a navigation: <code cds-text="code">navigated</code>, <code cds-text="code">redirected</code>,
+        <code cds-text="code">unchanged</code>, <code cds-text="code">rejected</code>,
+        <code cds-text="code">superseded</code> or <code cds-text="code">failed</code>, and the URL the page is now at.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">refused, detail</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        Why the operation was refused (a <code cds-text="code">ClrMutationRefusal</code>), and a sentence saying what to
+        do about it. The most common are <code cds-text="code">unclassified</code> (no policy),
+        <code cds-text="code">forbidden</code> (the policy said no), <code cds-text="code">declined</code> (the user
+        said no), <code cds-text="code">redacted</code> (a password or secret field),
+        <code cds-text="code">unbound</code> (the field has no Angular form binding) and
+        <code cds-text="code">stale</code> (the node is gone or changed since the snapshot).
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px"><code cds-text="code">ClrMutationPolicy</code></h4>
+<p class="clr-mt-16px" cds-text="body">
+  Provided with <code cds-text="code">provideClrMutationPolicy(policy)</code> in the application's providers, not in a
+  lazy route. It decides which writes are allowed and which need the user to confirm. Each method gets a
+  <code cds-text="code">ClrMutationTarget</code>: the operation, the field's label, type and element, or the route, and
+  the value about to be written.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">classify(target)</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">'reversible' | 'consequential' | 'forbidden'</code>
+      </td>
+      <td class="left">
+        Required. Says what a write would do: <code cds-text="code">reversible</code> runs at once,
+        <code cds-text="code">consequential</code> asks <code cds-text="code">confirm</code> first, and
+        <code cds-text="code">forbidden</code> is refused. Decide by the element or the form control, not the label,
+        which is translated and can repeat.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">confirm(target)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">boolean | Promise&lt;boolean&gt;</code></td>
+      <td class="left">
+        Optional. Asks the user before a consequential write. Without it, consequential writes are refused.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">confirmTimeoutMs</b></td>
+      <td class="left clr-hidden-xs-down">Number</td>
+      <td class="left">
+        Optional. How long <code cds-text="code">confirm</code> may wait before the write is refused. Two minutes by
+        default; <code cds-text="code">0</code> waits forever.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">announce(report)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Optional. Called after every <code cds-text="code">apply()</code>, for an app-wide toast or log. A chat panel
+        can read the report that <code cds-text="code">apply()</code> returns instead.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="directives" cds-text="title" class="clr-mt-48px">Directives</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Adds what only the application knows to the element it sits on (on an <code cds-text="code">ng-container</code>, the
+  element around it). It takes a property binding only, such as <code cds-text="code">[clrContext]="rules"</code>:
+  static text would be readable in the DOM, so it is a type error and throws in dev mode. Nothing it says is written to
+  the element. It is reported on that element's node in <code cds-text="code">components</code>, merged with what a
+  component there publishes. Where both set the same key, the component's value wins. Standalone: import
+  <code cds-text="code">ClrContext</code>, or <code cds-text="code">ClrContextModule</code> in an NgModule.
+  <code cds-text="code">CLR_CONTEXT_DIRECTIVES</code> lists the directives.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">[clrContext]</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">ClrContextAnnotation</code>:
+        <code cds-text="code">{{ '{' }} label, type, state {{ '}' }}</code>, or a function returning it
+      </td>
+      <td class="left clr-hidden-xs-down">required</td>
+      <td class="left">
+        <code cds-text="code">label</code> says what this part of the page is about and becomes the node's label.
+        <code cds-text="code">type</code> is what kind of UI it is (the element's role, or
+        <code cds-text="code">'generic'</code>, by default). <code cds-text="code">state</code> is application state
+        worth knowing, added to the node's <code cds-text="code">state</code>; keep it small. A function is read each
+        time a snapshot is taken.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes" cds-text="title" class="clr-mt-48px">Attributes</h2>
+
+<h3 cds-text="section" class="clr-mt-32px">Hiding content</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Password and file inputs, and inputs with <code cds-text="code">autocomplete</code> set to
+  <code cds-text="code">current-password</code>, <code cds-text="code">new-password</code>,
+  <code cds-text="code">one-time-code</code> or a <code cds-text="code">cc-</code> value, are always withheld. Mark
+  other secrets, such as API tokens or private keys in plain text fields.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Directive</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextRedact</b></td>
+      <td class="left">
+        The field, or every field inside the element, is still described (its label and type), but its value and the
+        text it shows are never read or written. Bind <code cds-text="code">false</code> to lift it, such as
+        <code cds-text="code">[clrContextRedact]="row.private"</code>. Exported as
+        <code cds-text="code">ClrContextRedact</code>; it sets <code cds-text="code">data-clr-context-redact</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextIgnore</b></td>
+      <td class="left">
+        The element and everything inside it is invisible to the engine. Put it on the chat panel itself, so the
+        assistant does not describe its own conversation. Bind <code cds-text="code">false</code> to lift it. Exported
+        as <code cds-text="code">ClrContextIgnore</code>; it sets <code cds-text="code">data-clr-context-ignore</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="snapshot-options" cds-text="title" class="clr-mt-48px">Snapshot options</h2>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextSnapshotOptions</code>. Set them for every snapshot with
+  <code cds-text="code">configure(&#123; scope &#125;)</code>, and pass them to a single call to change them for that
+  call. A call's value replaces the application's, except exclusion lists, which add up, so a call can only leave out
+  more. A call value of the wrong type is ignored, so the application's value stays.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left clr-hidden-xs-down">A call's value</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">root</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'page'</code></td>
+      <td class="left clr-hidden-xs-down">Replaces the application's</td>
+      <td class="left">
+        The part of the page to describe. <code cds-text="code">'modal'</code> describes only the open modal dialog, or
+        the whole page when no dialog is open, so it can be set once for the whole application. Anything else is a CSS
+        selector, such as <code cds-text="code">'main'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeCategories</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
+      <td class="left clr-hidden-xs-down">Adds to the application's</td>
+      <td class="left">
+        Kinds of content to leave out: <code cds-text="code">layout</code> (header, navigation, footer, side panels),
+        <code cds-text="code">actions</code>, <code cds-text="code">forms</code>, <code cds-text="code">headings</code>,
+        <code cds-text="code">collections</code>, <code cds-text="code">dialogs</code>,
+        <code cds-text="code">status</code>, <code cds-text="code">images</code>,
+        <code cds-text="code">text</code> (paragraphs and other plain text), <code cds-text="code">frames</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeSelectors</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
+      <td class="left clr-hidden-xs-down">Adds to the application's</td>
+      <td class="left">
+        CSS selectors for elements to leave out, with everything inside them. This only trims the snapshot; to keep
+        something from agents, use <code cds-text="code">clrContextRedact</code> or
+        <code cds-text="code">clrContextIgnore</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">depth</b></td>
+      <td class="left clr-hidden-xs-down">every level</td>
+      <td class="left clr-hidden-xs-down">Replaces the application's</td>
+      <td class="left">
+        How many levels below <code cds-text="code">root</code> to describe: <code cds-text="code">1</code> gives the
+        top-level nodes only, <code cds-text="code">2</code> their children too.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="clr-mt-16px" cds-text="body">
+  Presets for <code cds-text="code">scope</code>: <code cds-text="code">'full'</code> (the defaults),
+  <code cds-text="code">'interactive'</code> (no plain text, no layout) and <code cds-text="code">'minimal'</code> (also
+  <code cds-text="code">root: 'modal'</code>).
+</p>
+
+<h2 id="untrusted" cds-text="title" class="clr-mt-48px">Untrusted callers</h2>
+<p class="clr-mt-16px" cds-text="body">
+  The application's own code sees everything. Embedded frames are untrusted, because the application does not control
+  them. They get less:
+</p>
+<ul class="list clr-mt-16px">
+  <li>
+    No values the user entered or chose (typed text, selected options and rows, ticked boxes), unless the application
+    shares them. A withheld value is marked
+    <code cds-text="code">withheld: true</code>.
+  </li>
+  <li>
+    No full URL or page title, only the route pattern such as <code cds-text="code">clusters/:id</code>, unless the
+    application shares it.
+  </li>
+  <li>
+    Only safe options: <code cds-text="code">depth</code>, <code cds-text="code">excludeCategories</code>, and
+    <code cds-text="code">root</code> set to <code cds-text="code">'page'</code> or
+    <code cds-text="code">'modal'</code>. Never selectors, and never more than the application allows.
+  </li>
+</ul>
+
+<h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
+<p class="clr-mt-16px" cds-text="body">
+  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships in the package as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-2.schema.json</code> and as
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/page-context-2.schema.json"
+    >clarity.design/schemas/page-context-2.schema.json</a
+  >. A backend validates snapshots with that file and any JSON Schema validator, picking the file by the snapshot's
+  <code cds-text="code">schemaVersion</code>.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  The page validates with the same schema: <code cds-text="code">snapshot()</code> leaves out any node or optional field
+  that does not match it, with a warning in dev mode, so what it returns always passes the backend's check. A released
+  schema version never changes; a change to the format comes as a new version and a new file.
+</p>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">schemaVersion</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The snapshot format's version. New fields can appear without it changing.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrApplicationContext</code></td>
+      <td class="left">
+        The application's <code cds-text="code">id</code> and <code cds-text="code">version</code>. The id is the page's
+        host name when none is configured.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">
+        What the <code cds-text="code">[clrContext]</code> on the view root and its ancestors says about the view: its
+        state, with its label, inner winning. The view root is the element <code cds-text="code">scope.root</code>
+        selects, or the body.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enabled</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        <code cds-text="code">false</code> when the application turned the engine off for this view; the snapshot then
+        describes nothing on the page.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">title, url</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The document title and the current URL.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">route</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrRouteContext</code></td>
+      <td class="left">With the router: the route pattern, its parameters, the query parameters and the route data.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">availableRoutes</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrAvailableRoute[]</code></td>
+      <td class="left">
+        With <code cds-text="code">configure(&#123; routes: true &#125;)</code>: the routes the application can go to.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">components</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">
+        What is on the page right now, as a tree, with the application's annotations on the nodes they describe.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">regions</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">
+        What providers registered with <code cds-text="code">ClrContextRegistryService</code> said: context that no
+        element shows. A provider still answering is a region of type <code cds-text="code">'clr-loading'</code>, and
+        one that failed or was too slow is <code cds-text="code">'clr-unavailable'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">collectedAt</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">When the snapshot was taken, as an ISO timestamp.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">truncated</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        <code cds-text="code">true</code> when the page was too large or too deeply nested to read in full.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">modal</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">true</code></td>
+      <td class="left">Present when the snapshot describes only the open modal dialog.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrComponentContext</code></h3>
+<p class="clr-mt-16px" cds-text="body">One node of the tree.</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">type</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The ARIA role, such as <code cds-text="code">grid</code>, <code cds-text="code">dialog</code> or
+        <code cds-text="code">combobox</code>. Plain text is <code cds-text="code">text</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">element</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The tag, when it says more than the role, such as <code cds-text="code">clr-side-panel</code> or
+        <code cds-text="code">clr-modal</code> for two dialogs.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">label</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">Its accessible name, or the annotation's label.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">state</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">
+        What is true of it now, such as <code cds-text="code">expanded</code>, <code cds-text="code">selected</code>,
+        <code cds-text="code">invalid</code>, <code cds-text="code">value</code>, <code cds-text="code">error</code> or
+        <code cds-text="code">rows</code>, the annotation's state, and what its component published (see Published
+        values below).
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">children</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">What it contains. A dialog's buttons are among its children.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ref</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The id to pass to <code cds-text="code">setValue</code> and <code cds-text="code">clear</code>. Present only
+        with a mutation policy, and only on fields that can be written.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="publishing" cds-text="title" class="clr-mt-48px">Publishing from a component</h2>
+<p class="clr-mt-16px" cds-text="body">
+  For component authors: say what a component knows that its markup does not show. These live in
+  <code cds-text="code">&#64;clr/angular/utils</code>. An element holds one published context, so do not publish on an
+  element that already publishes, such as a <code cds-text="code">clr-datagrid</code>; use a wrapper element.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">contextText(element, skip?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The text an element shows, leaving out hidden and redacted parts. Use it to label rows or options from their
+        content.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">normalizeContextText(text, lowercase?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">Collapses whitespace and lowercases, to compare labels the way the engine does.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">usableSelectors(root, selectors)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">Joins the valid selectors into one and drops invalid ones.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPublishedContext</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> whose children
+  are published contexts too.
+</p>
+
+<h2 id="published-state" cds-text="title" class="clr-mt-48px">Published values</h2>
+<p class="clr-mt-16px" cds-text="body">
+  What Clarity components add to their node's <code cds-text="code">state</code>. Keys marked (value) are what the user
+  entered or chose.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Component</th>
+      <th class="left">State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-datagrid</b></td>
+      <td class="left">
+        <code cds-text="code">totalRows</code>, <code cds-text="code">rows</code> (each row's cells, such as
+        <code cds-text="code">esx-01 | ok</code>; value), <code cds-text="code">filteredColumns</code> (value),
+        <code cds-text="code">hiddenColumns</code> (value). When rows can be selected:
+        <code cds-text="code">selectionMode</code> and <code cds-text="code">value</code>, the selected rows (value).
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-combobox</b></td>
+      <td class="left">
+        <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
+        <code cds-text="code">value</code> (value). While the list is narrowed to what the user typed,
+        <code cds-text="code">matchingOptions</code> (value) replaces <code cds-text="code">options</code>.
+        <code cds-text="code">optionsPending</code> or <code cds-text="code">matchingOptionsPending</code> while
+        <code cds-text="code">clrLoading</code> is set.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-wizard</b></td>
+      <td class="left">
+        <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>, and
+        <code cds-text="code">steps</code>, each with <code cds-text="code">title</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">complete</code>,
+        <code cds-text="code">error</code> and <code cds-text="code">navigable</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-stepper-panel</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">inactive</code>,
+        <code cds-text="code">complete</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-timeline-step</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">not-started</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">processing</code>,
+        <code cds-text="code">success</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-tree-node</b></td>
+      <td class="left">
+        <code cds-text="code">expandable</code>, and <code cds-text="code">loading</code> while children load
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-alert</b></td>
+      <td class="left"><code cds-text="code">severity</code></td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
+      <td class="left"><code cds-text="code">fileCount</code> (value). The files themselves are never described.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-date-container</b></td>
+      <td class="left">The date is the input's <code cds-text="code">value</code> (value).</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">input[clrPassword]</b></td>
+      <td class="left">Described without its value.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clrDiffContext(previous, current)</b></td>
+      <td class="left">
+        What changed between two snapshots, as a <code cds-text="code">ClrContextChange</code>.
+        <code cds-text="code">clrIsEmptyContextChange(change)</code> says whether nothing did.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_PRESETS, CLR_CONTEXT_DEFAULT_OPTIONS</b></td>
+      <td class="left">The options each preset stands for, and the defaults.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_CATEGORIES</b></td>
+      <td class="left">The roles each <code cds-text="code">excludeCategories</code> entry stands for.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</b></td>
+      <td class="left">The snapshot options an untrusted caller may set.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_LOADING_TYPE, CLR_CONTEXT_UNAVAILABLE_TYPE</b></td>
+      <td class="left">
+        <code cds-text="code">'clr-loading'</code> and <code cds-text="code">'clr-unavailable'</code>, the region types
+        for a provider that has not answered.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextRegistryService.collect(options?)</b></td>
+      <td class="left">
+        What the registered providers say now; <code cds-text="code">collectAsync(options?)</code> waits for the ones
+        that answer with a promise. The service calls these itself.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrRequestHostContext(options?)</b></td>
+      <td class="left">
+        <code cds-text="code">requestHostContext()</code> without the service, for a page inside a frame.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_PROTOCOL</b></td>
+      <td class="left">
+        The name of the <code cds-text="code">postMessage</code> protocol frames use, for a frame not built with
+        Angular. Its messages are <code cds-text="code">ClrContextFrameRequest</code> and
+        <code cds-text="code">ClrContextFrameResponse</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">isWithinContextHidden(element), isContextWithheld(element)</b></td>
+      <td class="left">
+        Whether the engine treats the element as hidden (hidden, inert, or inside a
+        <code cds-text="code">clrContextIgnore</code> region), and whether it reads no text from it (hidden, redacted or
+        an editing host). For publishers that label things from their content.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_MUTATION_POLICY</b></td>
+      <td class="left">The injection token behind <code cds-text="code">provideClrMutationPolicy</code>.</td>
+    </tr>
+  </tbody>
+</table>

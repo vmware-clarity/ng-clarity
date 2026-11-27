@@ -18,6 +18,9 @@
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "schematics": "./schematics/collection.json",
+  "exports": {
+    "./ai/schemas/*": "./ai/schemas/*"
+  },
   "ng-update": {
     "migrations": "./schematics/collection.json"
   },

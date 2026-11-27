@@ -133,7 +133,8 @@
               "projects/angular/schematics/**",
               "projects/angular/utils/testing/**",
               "projects/angular/forms/tests/**",
-              "**/*.mock.ts"
+              "**/*.mock.ts",
+              "projects/angular/ai/contextual/schemas/*.validator.ts"
             ],
             "exclude": ["schematics/**"],
             "browserViewport": "1280x1024"
@@ -220,6 +221,11 @@
                 "glob": "**/*",
                 "input": "projects/website/src/compiled-ai/",
                 "output": "/"
+              },
+              {
+                "glob": "*.schema.json",
+                "input": "projects/angular/ai/contextual/schemas/",
+                "output": "/schemas/"
               },
               "projects/website/src/assets"
             ],
