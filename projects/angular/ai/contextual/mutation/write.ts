@@ -771,10 +771,10 @@ function listLabels(labels: string[]): string {
     .join(', ');
 }
 
+/** A combining mark belongs to its word, so Hindi or a decomposed "é" is not split into letters. */
 function words(text: string): string[] {
-  return text
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
+  return normalizeContextText(text)
+    .split(/[^\p{L}\p{M}\p{N}]+/u)
     .filter(Boolean);
 }
 

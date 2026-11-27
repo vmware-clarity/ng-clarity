@@ -690,6 +690,13 @@ describe('ClrMutationService write path', () => {
       expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBe(true);
     });
 
+    it('compares words the same way in any script and Unicode form', () => {
+      expect(descriptionMatches('नाम', 'मान')).toBe(false);
+      expect(descriptionMatches('हिन्दी नाम', 'हिन्दी नाम')).toBe(true);
+      expect(descriptionMatches('Café', 'Cafe\u0301')).toBe(true);
+      expect(descriptionMatches('Email', 'E\u200Bmail')).toBe(true);
+    });
+
     it('matches a label the snapshot cut short on the words it kept', () => {
       expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBe(true);
       expect(descriptionMatches('Phone number', 'Street address of…')).toBe(false);
