@@ -45,8 +45,6 @@ export interface WriteTarget {
   label: string;
   /** The label read from the page now; a ref keeps the one its snapshot showed. */
   shownLabel: string;
-  /** Whether `label` is the start of a longer name, cut by the snapshot. */
-  labelCut: boolean;
   type: string;
   kind: ControlKind;
   ngControl: NgControl | null;
@@ -121,18 +119,15 @@ export function resolveWriteTarget(
   if (obstacle) {
     return { refused: obstacle, detail: OBSTACLE_DETAILS[obstacle] };
   }
-  const withheld = withheldBy(control, options);
-  const shownLabel = labelOf(elements, withheld);
+  const shownLabel = labelOf(elements, withheldBy(control, options));
   const label = ref.label ?? shownLabel;
-  // A name that really ends in "…", such as "Search…", is not a cut one.
-  const labelCut = label.endsWith('…') && label !== labelOf(elements, withheld, Infinity);
   const targetOf = (
     element: Element,
     kind: ControlKind,
     ngControl: NgControl | null,
     mutator: ClrElementMutator | null
   ): TargetResolution => ({
-    target: { element, control, label, shownLabel, labelCut, type, kind, ngControl, mutator, options, knownModals },
+    target: { element, control, label, shownLabel, type, kind, ngControl, mutator, options, knownModals },
   });
 
   const element = boundElementOf(elements);
@@ -207,9 +202,9 @@ function bindingRefusal(
 
 /**
  * Whether the description names the node: every word of the label, plus only filler. Requiring every word
- * tells "Email" from "Confirm email" in any language; a `cut` label is matched on the words it kept.
+ * tells "Email" from "Confirm email" in any language. A label the snapshot cut is matched as it was shown.
  */
-export function descriptionMatches(description: unknown, label: string, type = '', cut = false): boolean {
+export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
     return false;
   }
@@ -222,20 +217,13 @@ export function descriptionMatches(description: unknown, label: string, type = '
   if (!given.length || given.some(word => NEGATING_WORDS.has(word) && !labelWords.includes(word))) {
     return false;
   }
-  // The last word of a cut label may itself be cut.
-  const actual = cut ? labelWords.slice(0, -1) : labelWords;
   // A distinguishing word must be said even when the type contains it ("start" in `date-range-start`).
-  if (actual.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
+  if (labelWords.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
     return false;
   }
-  const said = actual.every(word => given.includes(word) || FILLER_WORDS.has(word) || typeWords.includes(word));
-  // At least one word of the label must be said, also when the cut left only part of one.
-  const named = said && given.some(word => labelWords.includes(word));
-  if (cut) {
-    return named;
-  }
-  const extra = given.some(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
-  return named && !extra;
+  const said = labelWords.every(word => given.includes(word) || FILLER_WORDS.has(word) || typeWords.includes(word));
+  const extra = given.some(word => !labelWords.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
+  return said && given.some(word => labelWords.includes(word)) && !extra;
 }
 
 /**
@@ -747,10 +735,10 @@ function withheldBy(element: Element, options?: ResolvedSnapshotOptions): string
   return options ? usableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 
-function labelOf(elements: Element[], withheld: string, maxLength = MAX_LABEL_LENGTH): string {
+function labelOf(elements: Element[], withheld: string): string {
   for (let index = elements.length - 1; index >= 0; index--) {
     const element = elements[index];
-    const name = accessibleName(element, resolveRole(element), maxLength, withheld);
+    const name = accessibleName(element, resolveRole(element), MAX_LABEL_LENGTH, withheld);
     if (name) {
       return name;
     }
