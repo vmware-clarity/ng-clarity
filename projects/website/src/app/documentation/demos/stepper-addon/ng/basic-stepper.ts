@@ -32,7 +32,7 @@ export class ProjectNameModel implements StepModel {
   `,
 })
 export class StepperStep1Component implements StepModelHolder {
-  model: ProjectNameModel;
+  model!: ProjectNameModel;
 }
 
 /* ---- Step 2 model ---- */
@@ -62,7 +62,7 @@ export class TeamModel implements StepModel {
   `,
 })
 export class StepperStep2Component implements StepModelHolder {
-  model: TeamModel;
+  model!: TeamModel;
 }
 
 /* ---- Workflow model ---- */
@@ -93,7 +93,7 @@ export class ProjectWorkflowModel {
 })
 export class BasicStepperDemoComponent implements OnInit {
   model = new ProjectWorkflowModel();
-  steps: Step[];
+  steps!: Step[];
   submitted = false;
   result: { name: string; team: string } | null = null;
 

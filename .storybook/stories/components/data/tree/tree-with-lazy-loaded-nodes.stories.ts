@@ -24,7 +24,7 @@ type LazyLoadedNodesArgs = {
 
 class FileService {
   loading = false;
-  filenames: Observable<string[]>;
+  filenames?: Observable<string[]>;
 
   getFilenames() {
     this.loading = true;

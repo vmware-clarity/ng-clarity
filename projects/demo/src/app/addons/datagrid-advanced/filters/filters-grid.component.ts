@@ -186,7 +186,7 @@ export class FiltersGridComponent {
   protected predefinedFilteredItems: VmItem[] = [];
   protected combinedFilteredItems: VmItem[] = [];
   protected readonly FilterMode = FilterMode;
-  protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
+  protected selectedFilterMode: FilterMode | undefined = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
   private searchTerm = '';

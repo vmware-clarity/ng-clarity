@@ -24,9 +24,9 @@ export class SelectDatastoreModel implements StepModel {
   loading = false;
   validationState = new StepValidationState();
 
-  @In() storagePolicies: StoragePolicy[];
+  @In() storagePolicies?: StoragePolicy[];
 
-  @In() datastores: DatastoreGridItem[];
+  @In() datastores?: DatastoreGridItem[];
 
   @In({ optional: true })
   @Out()
@@ -36,8 +36,8 @@ export class SelectDatastoreModel implements StepModel {
   @Out()
   readonly selectedDatastoreId: Var<string> = Var.of();
 
-  selectedPolicyName: string;
-  selectedDatastoreNames: DatastoreGridItem[];
+  selectedPolicyName?: string;
+  selectedDatastoreNames?: DatastoreGridItem[];
 
   get selectedDatastoreName(): string {
     return this.selectedDatastoreNames?.[0]?.name || '';

@@ -255,15 +255,15 @@ export class DatagridVirtualScrollDemo implements OnInit, OnDestroy {
   }
 
   jumpTo(index: number, behaviour: 'auto' | 'smooth' = 'auto') {
-    this.datagrid()?.virtualScroll.scrollToIndex(index, behaviour);
+    this.datagrid()?.virtualScroll?.scrollToIndex(index, behaviour);
   }
 
   scrollDown(offset: number, behaviour: 'auto' | 'smooth' = 'smooth') {
-    this.datagrid()?.virtualScroll.scrollDown(offset, behaviour);
+    this.datagrid()?.virtualScroll?.scrollDown(offset, behaviour);
   }
 
   scrollUp(offset: number, behaviour: 'auto' | 'smooth' = 'smooth') {
-    this.datagrid()?.virtualScroll.scrollUp(offset, behaviour);
+    this.datagrid()?.virtualScroll?.scrollUp(offset, behaviour);
   }
 
   rowByIndex(index: number, user: User) {

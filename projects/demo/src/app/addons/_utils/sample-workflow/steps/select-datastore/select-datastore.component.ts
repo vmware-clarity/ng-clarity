@@ -22,8 +22,8 @@ import { DatastoreGridItem, SelectDatastoreModel, StoragePolicy } from './select
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectDatastoreComponent implements StepModelHolder, OnStepActivate, OnStepValidate {
-  model: SelectDatastoreModel;
-  selectedPolicy: StoragePolicy;
+  model!: SelectDatastoreModel;
+  selectedPolicy!: StoragePolicy;
   selectedDatastores: DatastoreGridItem[] = [];
 
   activate(stepModelChanges: ModelChanges): void {

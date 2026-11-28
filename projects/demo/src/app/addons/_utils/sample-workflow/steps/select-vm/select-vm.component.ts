@@ -20,7 +20,7 @@ import { SelectVmModel } from './select-vm.model';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectVmComponent implements StepModelHolder, OnStepValidate {
-  model: SelectVmModel;
+  model!: SelectVmModel;
 
   constructor() {
     ClarityIcons.addIcons(vmIcon);

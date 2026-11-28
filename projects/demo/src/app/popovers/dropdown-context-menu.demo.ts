@@ -50,7 +50,7 @@ import { ClarityModule, ClrDropdown } from '@clr/angular';
   `,
 })
 export class DropdownContextMenuDemo {
-  @ViewChild('contextDropdown', { static: true }) dropdown: ClrDropdown;
+  @ViewChild('contextDropdown', { static: true }) dropdown!: ClrDropdown;
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();

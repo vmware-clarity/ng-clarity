@@ -130,7 +130,7 @@ export class StorybookPanelGroup implements AfterViewInit, OnDestroy {
   @Input() content = 'Content for panel';
   @Input() openIndices: boolean[] = [];
 
-  @ViewChildren(StorybookPanel) panels: QueryList<StorybookPanel>;
+  @ViewChildren(StorybookPanel) panels!: QueryList<StorybookPanel>;
 
   createArray = createArray;
   private subscriptions: Subscription[] = [];

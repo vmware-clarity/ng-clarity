@@ -30,7 +30,7 @@ export class IconOptionsDemo {
   shape = 'info-circle';
   size = 'lg';
   direction = '';
-  flip: Orientations;
+  flip?: Orientations;
   solid = false;
   status = '';
   inverse = false;
