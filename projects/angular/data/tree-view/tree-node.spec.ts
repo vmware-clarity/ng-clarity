@@ -34,7 +34,7 @@ import { ClrTreeViewModule } from './tree-view.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('node') tree: ClrTreeNode<void>;
+  @ViewChild('node') tree!: ClrTreeNode<void>;
 
   selected = ClrSelectedState.UNSELECTED;
   expanded = false;
@@ -56,7 +56,7 @@ class TestComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class NestedTestComponent {
-  @ViewChild('node') tree: ClrTreeNode<void>;
+  @ViewChild('node') tree!: ClrTreeNode<void>;
 }
 
 interface LazyNode {
@@ -76,7 +76,7 @@ interface LazyNode {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LazyRecursiveTestComponent {
-  @ViewChild(ClrTreeNode) node: ClrTreeNode<LazyNode>;
+  @ViewChild(ClrTreeNode) node!: ClrTreeNode<LazyNode>;
 
   roots: LazyNode[] = [{ name: 'A', children: [{ name: 'AA' }] }];
   getChildren = (node: LazyNode) => node.children;
@@ -143,13 +143,13 @@ describe('Tree View', () => {
           TestBed.runInInjectionContext(() => {
             testContext.parent = new ClrTreeNode(
               platformID,
-              undefined,
+              undefined!,
               testContext.featureService,
               testContext.expandService,
               stringsService,
               testContext.focusManagerService,
               { nativeElement: document.createElement('div') },
-              null
+              null!
             );
             testContext.node = new ClrTreeNode(
               platformID,
@@ -159,7 +159,7 @@ describe('Tree View', () => {
               stringsService,
               testContext.focusManagerService,
               { nativeElement: document.createElement('div') },
-              null
+              null!
             );
           });
         });
@@ -223,7 +223,7 @@ describe('Tree View', () => {
         });
 
         it('is expandable handles no children', () => {
-          testContext.node._model.children = undefined;
+          testContext.node._model.children = undefined!;
           expect(() => {
             testContext.node.isExpandable();
           }).not.toThrow();
@@ -236,8 +236,13 @@ describe('Tree View', () => {
         });
 
         it('is expandable and does not fetch children if overriden to be expandable', () => {
-          const recursiveModel = new RecursiveTreeNodeModel(null, null, () => undefined, testContext.featureService);
-          const spy = vi.spyOn(recursiveModel, 'children', 'get').mockImplementation(() => undefined);
+          const recursiveModel = new RecursiveTreeNodeModel<void>(
+            undefined,
+            null,
+            () => undefined,
+            testContext.featureService
+          );
+          const spy = vi.spyOn(recursiveModel, 'children', 'get').mockImplementation(() => []);
           testContext.node._model = recursiveModel;
           testContext.node.expandable = true;
           expect(testContext.node.isExpandable()).toBe(true);
@@ -245,8 +250,13 @@ describe('Tree View', () => {
         });
 
         it('is not expandable and does not fetch children if overriden not to be expandable', () => {
-          const recursiveModel = new RecursiveTreeNodeModel(null, null, () => undefined, testContext.featureService);
-          const spy = vi.spyOn(recursiveModel, 'children', 'get').mockImplementation(() => undefined);
+          const recursiveModel = new RecursiveTreeNodeModel<void>(
+            undefined,
+            null,
+            () => undefined,
+            testContext.featureService
+          );
+          const spy = vi.spyOn(recursiveModel, 'children', 'get').mockImplementation(() => []);
           testContext.node._model = recursiveModel;
           testContext.node.expandable = false;
           expect(testContext.node.isExpandable()).toBe(false);
@@ -611,7 +621,7 @@ describe('Tree View', () => {
         });
 
         it('expands collapsed node if expandable on ArrowRight key', () => {
-          testContext.clarityDirective._model.children = [null]; // children array needs to have something
+          testContext.clarityDirective._model.children = [null!]; // children array needs to have something
           expect(testContext.clarityDirective.expanded).toBe(false);
           expect(testContext.clarityDirective.isExpandable()).toBe(true);
           contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -619,7 +629,7 @@ describe('Tree View', () => {
         });
 
         it('toggles aria-expanded on expanded property value change on node content container', () => {
-          testContext.clarityDirective._model.children = [null]; // children array needs to have something
+          testContext.clarityDirective._model.children = [null!]; // children array needs to have something
           expect(testContext.clarityDirective.expanded).toBe(false);
           expect(contentContainer.getAttribute('aria-expanded')).toBe('false');
           contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -629,7 +639,7 @@ describe('Tree View', () => {
         });
 
         it('calls focusManager.focusNodeBelow if node is already expanded on ArrowRight key', () => {
-          testContext.clarityDirective._model.children = [null]; // children array needs to have something
+          testContext.clarityDirective._model.children = [null!]; // children array needs to have something
           testContext.clarityDirective.expanded = true;
           vi.spyOn(focusManager, 'focusNodeBelow').mockImplementation(() => undefined);
           contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -637,7 +647,7 @@ describe('Tree View', () => {
         });
 
         it('calls focusManager.focusNodeBelow if node is already disabled on ArrowDown key', () => {
-          testContext.clarityDirective._model.children = [null]; // children array needs to have something
+          testContext.clarityDirective._model.children = [null!]; // children array needs to have something
           testContext.clarityDirective.disabled = true;
           testContext.detectChanges();
           expect(contentContainer.getAttribute('aria-disabled')).toBe('true');
@@ -648,7 +658,7 @@ describe('Tree View', () => {
         });
 
         it('collapses expanded node on ArrowLeft key', () => {
-          testContext.clarityDirective._model.children = [null]; // children array needs to have something
+          testContext.clarityDirective._model.children = [null!]; // children array needs to have something
           testContext.clarityDirective.expanded = true;
           contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
           expect(testContext.clarityDirective.expanded).toBe(false);
@@ -662,7 +672,7 @@ describe('Tree View', () => {
 
         it('keeps the children out of reach from the moment the node collapses', () => {
           const childrenContainer: HTMLElement = testContext.clarityElement.querySelector('.clr-treenode-children');
-          const child: HTMLElement = childrenContainer.querySelector('.clr-tree-node-content-container');
+          const child: HTMLElement = childrenContainer.querySelector('.clr-tree-node-content-container')!;
           const canFocus = (element: HTMLElement) => {
             element.focus();
             return document.activeElement === element;

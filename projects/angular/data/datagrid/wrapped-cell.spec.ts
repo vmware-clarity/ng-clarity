@@ -17,7 +17,7 @@ import { WrappedCell } from './wrapped-cell';
   standalone: false,
 })
 class WrappedCellTest {
-  @ViewChild(WrappedCell, { static: true }) wrapper: WrappedCell;
+  @ViewChild(WrappedCell, { static: true }) wrapper!: WrappedCell;
 }
 
 interface TestContext {

@@ -28,11 +28,11 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
+  @ViewChild(ClrDatagridItems) datagridItems!: ClrDatagridItems<number>;
 
   numbers = [1, 2, 3, 4, 5];
 
-  trackBy: (index: number, item: number) => any;
+  trackBy!: (index: number, item: number) => any;
 }
 
 @Component({
@@ -47,7 +47,7 @@ class FullTest {
 class DestroyTest {
   numbers = [1, 2, 3, 4, 5];
 
-  trackBy: (index: number, item: number) => any;
+  trackBy!: (index: number, item: number) => any;
 
   showItems = true;
 }
@@ -62,7 +62,7 @@ class DestroyTest {
   standalone: false,
 })
 class TrackByIndexTest {
-  @ViewChild(ClrDatagridItems) datagridItems: ClrDatagridItems<number>;
+  @ViewChild(ClrDatagridItems) datagridItems!: ClrDatagridItems<number>;
 
   numbers = [1, 2, 3, 4, 5];
 

@@ -14,7 +14,7 @@ import { ColumnState } from '../interfaces/column-state.interface';
 describe('ColumnsService provider', function () {
   let provider: ColumnsService;
   let subscription: Subscription;
-  let state: ColumnState = null;
+  let state: ColumnState | null = null;
   const col1 = { width: 100 };
   const col2 = { hideable: true };
 
