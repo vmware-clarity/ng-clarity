@@ -153,7 +153,7 @@ describe('Combobox component', () => {
       });
 
       it('pseudo-focus model has focusChanged observable', () => {
-        let changeValue: string = null;
+        let changeValue: string | null = null;
         pseudoFocusModel.focusChanged.subscribe(value => {
           changeValue = value;
         });

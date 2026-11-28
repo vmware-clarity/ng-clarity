@@ -239,9 +239,9 @@ describe('Datepicker', () => {
           context.detectChanges();
 
           expect(dateNavigationService.focusedDay).not.toBeUndefined();
-          expect(dateNavigationService.focusedDay.date).toBe(testDayView.dayModel.date);
-          expect(dateNavigationService.focusedDay.month).toBe(testDayView.dayModel.month);
-          expect(dateNavigationService.focusedDay.year).toBe(testDayView.dayModel.year);
+          expect(dateNavigationService.focusedDay!.date).toBe(testDayView.dayModel.date);
+          expect(dateNavigationService.focusedDay!.month).toBe(testDayView.dayModel.month);
+          expect(dateNavigationService.focusedDay!.year).toBe(testDayView.dayModel.year);
         });
 
         it('marks the date control as dirty when a date is selected', () => {

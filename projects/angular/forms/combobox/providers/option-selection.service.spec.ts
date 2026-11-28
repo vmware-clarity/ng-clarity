@@ -31,7 +31,7 @@ describe('Combobox component', () => {
       });
 
       it('notifies that the value has changed', () => {
-        let selectedValue: string;
+        let selectedValue!: string;
         const subscription: Subscription = optionSelectionService.inputChanged.subscribe((value: string) => {
           selectedValue = value;
         });
@@ -43,7 +43,7 @@ describe('Combobox component', () => {
       });
 
       it('notifies that the option has changed', () => {
-        let selectedOption: string;
+        let selectedOption: string | null | undefined;
         const subscription: Subscription = optionSelectionService.selectionChanged.subscribe(
           (option: ComboboxModel<string>) => {
             selectedOption = option.pop();
@@ -57,7 +57,7 @@ describe('Combobox component', () => {
       });
 
       it('can toggle an option and emits selection events', () => {
-        let selectedOption: string;
+        let selectedOption!: string;
         const subscription: Subscription = optionSelectionService.selectionChanged.subscribe(
           (option: ComboboxModel<string>) => {
             selectedOption = option.model as string;
@@ -149,7 +149,7 @@ describe('Combobox component', () => {
 
       describe('editableResolverFn', () => {
         it('returns string as-is by default', () => {
-          expect(optionSelectionService.editableResolver('test')).toBe('test');
+          expect(optionSelectionService.editableResolver!('test')).toBe('test');
         });
 
         it('returns expected item when resolver is provided', () => {

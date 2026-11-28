@@ -53,7 +53,7 @@ class TestWrapper {}
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
   constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
-    super(vcr, TestWrapper, null, null, null, el);
+    super(vcr, TestWrapper, null!, null, null!, el);
   }
 }
 
@@ -75,7 +75,7 @@ class TestWrapper2 {}
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
   constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
-    super(vcr, TestWrapper2, null, null, null, el);
+    super(vcr, TestWrapper2, null!, null, null!, el);
   }
 }
 
@@ -393,7 +393,7 @@ describe('Forms common utilities', () => {
       it('subscribes to requests to mark as touched', () => {
         setupTest(testContext, WithControl, TestControl3);
         expect(testContext.input.className).not.toContain('ng-touched');
-        testContext.markControlService.markAsTouched();
+        testContext.markControlService!.markAsTouched();
         renderFixture(testContext.fixture);
         expect(testContext.input.className).toContain('ng-touched');
       });

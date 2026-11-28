@@ -20,7 +20,7 @@ describe('Forms common utilities', () => {
     it('exposes an Observable for id changes', function () {
       const service = new ControlIdService();
       service.id = 'hello';
-      let emittedId: string;
+      let emittedId!: string;
       service.idChange.subscribe(id => (emittedId = id));
       expect(emittedId).toBe('hello');
       service.id = 'world';

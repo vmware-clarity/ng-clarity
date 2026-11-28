@@ -29,12 +29,12 @@ describe('AccordionService', () => {
     accordionService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(false));
+      .subscribe(panel => expect(panel!.open).toBe(false));
 
     accordionService
       .getPanelChanges(panel2Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
+      .subscribe(panel => expect(panel!.open).toBe(true));
   });
 
   it('should allow multiple panels open in multi strategy', () => {
@@ -45,11 +45,11 @@ describe('AccordionService', () => {
     accordionService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
+      .subscribe(panel => expect(panel!.open).toBe(true));
 
     accordionService
       .getPanelChanges(panel2Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
+      .subscribe(panel => expect(panel!.open).toBe(true));
   });
 });

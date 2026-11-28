@@ -38,7 +38,7 @@ describe('Focus management', () => {
       TestBed.configureTestingModule({ declarations: [SimpleHost] });
       const fixture = TestBed.createComponent(SimpleHost);
       testContext.el = fixture.debugElement.nativeElement;
-      testContext.item = fixture.debugElement.injector.get(FocusableItem, null);
+      testContext.item = fixture.debugElement.injector.get(FocusableItem, null)!;
       testContext.id = testContext.item.id;
     });
 
@@ -68,9 +68,9 @@ describe('Focus management', () => {
       let clicks = 0;
       testContext.el.addEventListener('click', () => clicks++);
       expect(clicks).toBe(0);
-      testContext.item.activate();
+      testContext.item.activate!();
       expect(clicks).toBe(1);
-      testContext.item.activate();
+      testContext.item.activate!();
       expect(clicks).toBe(2);
     });
   });

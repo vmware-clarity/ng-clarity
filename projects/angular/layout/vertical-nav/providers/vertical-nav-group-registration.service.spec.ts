@@ -23,7 +23,7 @@ describe('Vertical Nav', () => {
       });
 
       afterEach(() => {
-        vertNavGroupService = null;
+        vertNavGroupService = null!;
       });
 
       it('supports registration of nav groups', () => {

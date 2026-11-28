@@ -25,9 +25,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<number>;
   numbers = [0, 1, 2, 3];
-  trackBy: TrackByFunction<number>;
+  trackBy!: TrackByFunction<number>;
 }
 
 @Component({
@@ -41,7 +41,7 @@ class FullTest {
   standalone: false,
 })
 class TrackByIndexTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<number>;
   numbers = [0, 1, 2, 3];
   trackBy: TrackByFunction<number> = index => index;
 }
@@ -57,7 +57,7 @@ class TrackByIndexTest {
   standalone: false,
 })
 class ObjectDataTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<number>;
   numbers = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
   trackBy: TrackByFunction<number> = index => index;
 }

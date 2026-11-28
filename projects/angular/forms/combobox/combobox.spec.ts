@@ -44,12 +44,12 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class TestComponent {
-  multi: boolean;
+  multi!: boolean;
   editable = false;
   selection: any;
-  inputValue: string;
-  openState: boolean;
-  placeholder: string;
+  inputValue!: string;
+  openState!: boolean;
+  placeholder!: string;
   disabled = false;
   inputChanged(value: string) {
     this.inputValue = value;
@@ -120,7 +120,7 @@ describe('Combobox component', () => {
 
         it('does not close panel on clear', () => {
           popoverService.open = true;
-          clarityDirective.writeValue(null);
+          clarityDirective.writeValue(null!);
           expect(clarityDirective.openState).toBe(true);
         });
 
@@ -235,20 +235,20 @@ describe('Combobox component', () => {
         });
 
         it('opens the menu on the trigger click', () => {
-          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger')!;
           expect(popoverService.open).toBe(false);
           trigger.click();
           expect(popoverService.open).toBe(true);
         });
 
         it('has aria-owns attribute', () => {
-          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
           expect(trigger.hasAttribute('aria-owns')).toBe(true);
           expect(trigger.getAttribute('aria-owns')).toContain('clr-options-');
         });
 
         it('has aria-expanded attribute', () => {
-          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
           expect(trigger.hasAttribute('aria-expanded')).toBe(true);
           expect(trigger.getAttribute('aria-expanded')).toEqual('false');
           popoverService.open = true;
@@ -259,7 +259,7 @@ describe('Combobox component', () => {
         it('should pass placeholder to internal input', () => {
           fixture.componentInstance.placeholder = 'hello world';
           renderFixture(fixture);
-          const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
           expect(combobox.getAttribute('placeholder')).toEqual('hello world');
         });
 
@@ -268,7 +268,7 @@ describe('Combobox component', () => {
           renderFixture(fixture);
           await delay();
           renderFixture(fixture);
-          const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
+          const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger')!;
           expect(button.disabled).toBeTruthy();
         });
       });
@@ -281,7 +281,7 @@ describe('Combobox component', () => {
         });
 
         it('returns the same item by default when no resolver is provided', () => {
-          const result = selectionService.editableResolver('test');
+          const result = selectionService.editableResolver!('test');
           expect(result).toEqual('test');
         });
       });
@@ -359,7 +359,7 @@ describe('Combobox component', () => {
             standalone: false,
           })
           class OnPushTestComponent {
-            selection: number;
+            selection!: number;
           }
 
           it('moves the keyboard focus between options', async () => {

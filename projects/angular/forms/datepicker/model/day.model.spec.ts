@@ -34,7 +34,7 @@ describe('Datepicker', () => {
         expect(dayModel3.isEqual(dayModel2)).toBe(false);
         expect(dayModel2.isEqual(dayModel3)).toBe(false);
 
-        expect(dayModel1.isEqual(null)).toBe(false);
+        expect(dayModel1.isEqual(null!)).toBe(false);
       });
 
       it('converts a DayModel into the javascript date object', () => {

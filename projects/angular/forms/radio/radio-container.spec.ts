@@ -66,7 +66,7 @@ class TemplateDrivenTest {
 })
 class AriaLabelledByTest {
   model = '';
-  labelId: string = null;
+  labelId: string | null = null;
 }
 
 @Component({
@@ -179,10 +179,10 @@ describe('Radio component', () => {
       });
 
       it('sets the inline class', () => {
-        expect(containerEl.querySelector('.clr-control-container').className).not.toContain('clr-control-inline');
+        expect(containerEl.querySelector('.clr-control-container')!.className).not.toContain('clr-control-inline');
         fixture.debugElement.componentInstance.inline = true;
         renderFixture(fixture);
-        expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
+        expect(containerEl.querySelector('.clr-control-container')!.className).toContain('clr-control-inline');
       });
     });
   });
